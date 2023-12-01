@@ -8,7 +8,7 @@ export class AdminService {
     constructor(private readonly appService: AppService, private readonly Service: Service) {}
 
     async getUser(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getUser(tok.user_id) });
         } else {
@@ -18,7 +18,7 @@ export class AdminService {
 
 
     async getFlat(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getFlat(tok.flat_id) });
         } else {
@@ -27,7 +27,7 @@ export class AdminService {
     }
 
     async getUsers(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getUsers(tok) });
         } else {
@@ -36,7 +36,7 @@ export class AdminService {
     }
 
     async getFlats(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getFlats(tok) });
         } else {
@@ -46,7 +46,7 @@ export class AdminService {
 
 
     async getUsersReports(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getUsersReports(tok) });
         } else {
@@ -55,7 +55,7 @@ export class AdminService {
     }
 
     async getFlatsReports(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.getFlatsReports(tok) });
         } else {
@@ -66,7 +66,7 @@ export class AdminService {
 
 
     async changeUser(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.changeUser(tok) });
         } else {
@@ -75,7 +75,7 @@ export class AdminService {
     }
 
     async changeFlat(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.changeFlat(tok) });
         } else {
@@ -85,7 +85,7 @@ export class AdminService {
 
 
     async deleteUserReport(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.deleteUserReport(tok) });
         } else {
@@ -94,7 +94,7 @@ export class AdminService {
     }
 
     async deleteFlatReport(tok: any, res: any): Promise<any> {
-        const a = await this.appService.authentification2(tok.auth);
+        const a = await this.appService.authentification(tok.auth);
         if(a.owner === 1 || a.admin === 1) {
             res.status(200).json({ status: await this.Service.deleteFlatReport(tok) });
         } else {
