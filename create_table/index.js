@@ -1,5 +1,5 @@
 import mysql from 'mysql'
-
+import * as mm from 'mysql2/promise'
 
 
 
@@ -12,7 +12,7 @@ const conf = {
 
 conf.database = "disscussio_beta_1"
 
-
+const conect = mm.createConnection(conf)
 
 const con = mysql.createConnection(conf)
 
@@ -606,17 +606,47 @@ con.query("CREATE TABLE IF NOT EXISTS comunal_img ( \
 });
 
 
-con.query('SHOW TABLES', (error, results, fields) => {
+con.query('SHOW TABLES', async(error, results, fields) => {
     if (error) throw error;
     console.log('Tables:', results);
+
+    let [rows, fieldsss] = await (await conect).execute('INSERT INTO users (user_mail, password, dob, data_create) VALUES (?, ?, ?, ?)',
+    ["dkononov.ua@gmail.com", "1111111", new Date("05.30.1995"), new Date()])
+    console.log(rows)
+
+    await (await conect).execute('INSERT INTO contacts (user_id) VALUES (?)',
+    [rows.insertId])
+
+    await (await conect).execute('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [rows.insertId, "user_default.svg"])
+
+    await (await conect).execute('INSERT INTO features (user_id) VALUES (?)', [rows.insertId])
+
+    await (await conect).execute('INSERT INTO user_parametrs (user_id) VALUES (?)', [rows.insertId])
+
+    await (await conect).execute('INSERT INTO user_status (user_id, owner) VALUES (?, ?)', [rows.insertId, true])
+
+
+    let [rows2, fields2] = await (await conect).execute('INSERT INTO users (user_mail, password, dob, data_create) VALUES (?, ?, ?, ?)',
+    ["dragonofdead93@gmail.com", "7777777", new Date("07.29.2000"), new Date()])
+    console.log(rows2)
+
+    await (await conect).execute('INSERT INTO contacts (user_id) VALUES (?)',
+    [rows2.insertId])
+
+    await (await conect).execute('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [rows2.insertId, "user_default.svg"])
+
+    await (await conect).execute('INSERT INTO features (user_id) VALUES (?)', [rows2.insertId])
+
+    await (await conect).execute('INSERT INTO user_parametrs (user_id) VALUES (?)', [rows2.insertId])
+
+    await (await conect).execute('INSERT INTO user_status (user_id, owner) VALUES (?, ?)', [rows2.insertId, true])
 });
+
 
 
 con.end() 
 
 
 })
-
-
 
 
