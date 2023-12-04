@@ -124,7 +124,7 @@ export class RegistrationService {
 
 
     async forgotpass1(inf: any, res: any): Promise<any> {
-        let a = await this.Service.registercheck({email:inf.email})
+        let a = await this.Service.registercheck(inf.email)
         if(a){
           let numb = await this.Service.new_secureforgotpass(inf)
           const html = `<p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 16px;">Вас вітає служба безпеки</p>
