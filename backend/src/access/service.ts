@@ -80,13 +80,19 @@ export class Service {
   }
 
 
-  async registercheck(tok: any) {
-    let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [tok.email])
-    if (rows[0] !== undefined) {
+  async registercheck(mail:string) {
+    try{
+      const conect2 = await mm.createConnection(config)
+      let [rows, fields] = await conect2.execute('SELECT * FROM users WHERE user_mail = ?;', [mail])
+      if (rows[0] !== undefined) {
       return rows[0]
     } else {
       return undefined
     }
+    }catch(err){
+      return false
+    }
+    
   }
 
 
