@@ -137,8 +137,8 @@ export class Service {
                     let [rows2, fields2] = await (await conect).execute('SELECT * FROM agreement_act WHERE agreement_id = ?', [item.agreement_id])
                     const timeDifference = da - item.data;
                     const daysDifference = timeDifference / millisecondsInDay;
-                    // Виправити - 40 на 14
-                    if(daysDifference > 14 && rows2[0]){
+                    // Виправити - 40 на 30
+                    if(daysDifference > -40 && rows2[0]){
                         chosen_agre = item
                     }else{
                         return
@@ -189,8 +189,8 @@ export class Service {
                     let aaaa : any = new Date(item.data)
                     const timeDifference = da - aaaa;
                     const daysDifference = timeDifference / millisecondsInDay;
-                    // Виправити - 100 на 14
-                    if(daysDifference > 14 && rows2[0]){
+                    // Виправити - 100 на 30
+                    if(daysDifference > -100 && rows2[0]){
                         chosen_agre = item
                     }else{
                         return

@@ -33,7 +33,7 @@ export class Service {
   }
 
   async new_secure(inf: any) {
-    let numb = Math.floor(Math.random()*1000000)
+    let numb = Math.floor(Math.random()*900000) + 100000
     let [rows2, fields2] = await (await conect).execute('DELETE FROM use_security WHERE email = ?;', [inf.regEmail])    
     let [rows, fields] = await (await conect).execute('INSERT INTO use_security (email, password, em_pass, attempt_counter, dob) VALUES (?, ?, ?, ?, ?)',
      [inf.regEmail, inf.regPassword, numb, 0, new Date(inf.dob)])   
@@ -45,7 +45,7 @@ export class Service {
   }
 
   async new_secureforgotpass(inf: any) {
-    let numb = Math.floor(Math.random()*1000000)
+    let numb = Math.floor(Math.random()*900000) + 100000
     let [rows2, fields2] = await (await conect).execute('DELETE FROM use_security WHERE email = ?;', [inf.email])    
     let [rows, fields] = await (await conect).execute('INSERT INTO use_security (email, em_pass, attempt_counter) VALUES (?, ?, ?)',
      [inf.email, numb, 0])   
@@ -80,18 +80,13 @@ export class Service {
   }
 
 
-  async registercheck(mail:string) {
-    try{
-      let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [mail])
-      if (rows[0] !== undefined) {
+  async registercheck(tok: any) {
+    let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [tok.email])
+    if (rows[0] !== undefined) {
       return rows[0]
     } else {
       return undefined
     }
-    }catch(err){
-      return [123]
-    }
-    
   }
 
 
