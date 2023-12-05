@@ -6,10 +6,10 @@ RUN npm install -g @nestjs/cli
 EXPOSE 3000
 COPY . .
 RUN npm install
-VOLUME /code/server/Static/filling
-VOLUME /code/server/Static/flat
-VOLUME /code/server/Static/users
-VOLUME /code/server/Static/comunal
+VOLUME /disc/server/Static/filling
+VOLUME /disc/server/Static/flat
+VOLUME /disc/server/Static/users
+VOLUME /disc/server/Static/comunal
 CMD ["npm", "start"]
 
 # WORKDIR /code
