@@ -3,10 +3,10 @@ import { Injectable } from '@nestjs/common';
 import conee from 'src/db';
 import * as mm from 'mysql2/promise'
 import config from 'src/dbpar';
+import conect from 'src/db_promise';
 
 
-
-const conect = mm.createConnection(config)
+// const conect = mm.createConnection(config)
 
 
 
@@ -80,13 +80,18 @@ export class Service {
   }
 
 
-  async registercheck(tok: any) {
-    let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [tok.email])
-    if (rows[0] !== undefined) {
+  async registercheck(mail:string) {
+    try{
+      let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [mail])
+      if (rows[0] !== undefined) {
       return rows[0]
     } else {
       return undefined
     }
+    }catch(err){
+      return [123]
+    }
+    
   }
 
 

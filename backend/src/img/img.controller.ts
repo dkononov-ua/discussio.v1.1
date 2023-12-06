@@ -51,23 +51,23 @@ constructor(private readonly ImgServicee: ImgService) {}
 
   @Get('flat/:imgpath')
   async getflatimg( @Param('imgpath') img, @Res() res): Promise<any> {
-    return res.sendFile("flat/" + img, {root: 'Static'});
+    return res.sendFile(img, {root: 'Static/flat'});
   }
 
   @Get('users/:imgpath')
   async getuserimg( @Param('imgpath') img, @Res() res): Promise<any> {
-    return res.sendFile("users/" + img, {root: 'Static'});
+    return res.sendFile(img, {root: 'Static/users'});
   }
 
   @Get('filling/:imgpath')
   async getFillingimg( @Param('imgpath') img, @Res() res): Promise<any> {
-    return res.sendFile("filling/" + img, {root: 'Static'});
+    return res.sendFile(img, {root: 'Static/filling'});
   }
 
 
   @Get('comunal/:imgpath')
   async getComunal( @Param('imgpath') img, @Res() res): Promise<any> {
-    return res.sendFile("comunal/" + img, {root: 'Static'});
+    return res.sendFile(img, {root: 'Static/comunal'});
   }
 
   @Post('uploadcomunal')

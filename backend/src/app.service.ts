@@ -4,6 +4,7 @@ import conee from './db';
 // import conect from './sqlfunc/db';
 import * as mm from 'mysql2/promise'
 import config from './dbpar';
+import conect from 'src/db_promise';
 
 // const config = {
 //   host: 'mysql',
@@ -15,7 +16,7 @@ import config from './dbpar';
 
 
 
-const conect = mm.createConnection(config)
+// const conect = mm.createConnection(config)
 
 
 
@@ -68,7 +69,14 @@ export class AppService {
     }
   }
 
-  
+  async flatCheck2(user_id: string, flat_id: string) {
+    let [rows, fields] = await (await conect).execute('SELECT * FROM flat WHERE flat_id = ? AND owner_id = ?;', [flat_id, user_id])
+    if (rows[0] !== undefined) {
+      return rows[0]
+    } else {
+      return false
+    }
+  }
 
 
   async flatRentCheck(flat_id: string) {
@@ -206,15 +214,6 @@ export class AppService {
 
   async accept_subs(user_id: string, flat_id: string) {
     let [rows, fields] = await (await conect).execute('SELECT * FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [flat_id, user_id])
-    if (rows[0] !== undefined) {
-      return rows[0]
-    } else {
-      return false
-    }
-  }
-
-  async flatCheck2(user_id: string, flat_id: string) {
-    let [rows, fields] = await (await conect).execute('SELECT * FROM flat WHERE flat_id = ? AND owner_id = ?;', [flat_id, user_id])
     if (rows[0] !== undefined) {
       return rows[0]
     } else {

@@ -64,7 +64,7 @@ export class RegistrationService {
       const millisecondsInYear = 365.25 * 24 * 60 * 60 * 1000;
       const yearsDifference = timeDifference / millisecondsInYear;
       if(inf.regEmail !== undefined && inf.regEmail !== null && inf.regPassword !== undefined && inf.regPassword !== null && yearsDifference > 16){
-        let a = await this.Service.registercheck({email:inf.regEmail})
+        let a = await this.Service.registercheck(inf.regEmail)
         if(a){
           res.status(200).json({ status: "Ви вже зареєстровані"});
         }else{  
@@ -124,7 +124,7 @@ export class RegistrationService {
 
 
     async forgotpass1(inf: any, res: any): Promise<any> {
-        let a = await this.Service.registercheck({email:inf.email})
+        let a = await this.Service.registercheck(inf.email)
         if(a){
           let numb = await this.Service.new_secureforgotpass(inf)
           const html = `<p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 16px;">Вас вітає служба безпеки</p>

@@ -6,20 +6,17 @@ const config = {
     password: 'discuss32144',
     insecureAuth: true,
     database: "disscussio_beta_1",
+
 }
-
-
-
 
 
 // const config = {
 //     host: 'localhost',
 //     port: 3306,
 //     user: 'root',
-//     password: 'discuss32144',
+//     password: '_i1h!pH<i=dr',
 //     insecureAuth: true,
-//     database: "disscussio_beta_1",
-
+//     database: "us3322445",
 // }
 
 
