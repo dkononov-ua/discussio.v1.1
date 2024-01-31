@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+// import conee from 'src/db';
+import * as mysql from 'mysql2'
+import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
@@ -19,10 +21,14 @@ export class UsersubsService {
                     if(ac_subs === false){
                         let subs = await this.Service.user_subscribes(tok.user_id, tok.flat_id)
                         if(subs === false){
+                            const conee = mysql.createConnection(config)
                             conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
+                            conee.end()
                             res.status(200).json({ status: "Ви успішно підписались" });
                         }else{
+                            const conee = mysql.createConnection(config)
                             conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
+                            conee.end()
                             res.status(200).json({ status: "Ви успішно відписались" });
                         }
                     }else{
@@ -40,10 +46,14 @@ export class UsersubsService {
                         if(ac_subs === false){
                             let subs = await this.Service.user_subscribes(tok.user_id, tok.flat_id)
                             if(subs === false){
+                                const conee = mysql.createConnection(config)
                                 conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
+                                conee.end()
                                 res.status(200).json({ status: "Ви успішно підписались" });
                             }else{
+                                const conee = mysql.createConnection(config)
                                 conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
+                                conee.end()
                                 res.status(200).json({ status: "Ви успішно відписались" });
                             }
                         }else{
@@ -123,8 +133,10 @@ export class UsersubsService {
             if(subs){
                 let acc_subs = await this.appService.accept_subs(a.user_id, tok.flat_id)
                 if(acc_subs === false){
+                    const conee = mysql.createConnection(config)
                     conee.query('INSERT INTO accept_subs (user_id, flat_id) VALUES (?, ?)', [subs.user_id, subs.flat_id])
                     conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [subs.flat_id, subs.user_id])
+                    conee.end()
                     res.status(200).json({ status: true });
                 }else{
                     res.status(200).json({ status: "Ви вже в дискусії" });
@@ -144,12 +156,16 @@ export class UsersubsService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
+                const conee = mysql.createConnection(config)
                 conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, tok.user_id])
+                conee.end()
                 res.status(200).json({ status: true });
             }else{
                 let admin = await this.appService.citizen(a.user_id, tok.flat_id)
                 if(admin.acces_subs === 1){
+                    const conee = mysql.createConnection(config)
                     conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, tok.user_id])
+                    conee.end()
                     res.status(200).json({ status: true });
                 }else{
                     res.status(200).json({ status: false });
@@ -163,7 +179,9 @@ export class UsersubsService {
     async deleteYSubs(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok.auth)
         if (a) {
+            const conee = mysql.createConnection(config)
             conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
+            conee.end()
             res.status(200).json({ status: true });
         } else {
             res.status(200).json({ status: false });

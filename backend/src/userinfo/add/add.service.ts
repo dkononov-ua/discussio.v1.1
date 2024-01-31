@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 
 
@@ -13,6 +14,7 @@ export class AddService {
     async getUserinfoServiceAdd(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok.auth)
         if(a){
+            const conee = mysql.createConnection(config)
             conee.query("UPDATE users SET firstName = ?, lastName = ?, surName = ?, password = ? WHERE user_id = ?",
                 [tok.new.firstName, tok.new.lastName, tok.new.surName, tok.auth.password, a.user_id],
                 (err, resuuuu)=>{
@@ -22,6 +24,7 @@ export class AddService {
                         res.status(200).json({ status: true, inf:a });                            
                     }
                 })
+            conee.end()
         }else{
             res.status(200).json({ status: false });
         }
@@ -31,6 +34,7 @@ export class AddService {
     async getUsercontactsServiceAdd(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok.auth)
         if(a){
+            const conee = mysql.createConnection(config)
             conee.query("UPDATE contacts SET instagram = ?, telegram = ?, viber = ?, facebook = ?, tell = ?, phone_alt = ?, mail = ? WHERE user_id = ?",
                 [tok.new.instagram, tok.new.telegram, tok.new.viber, tok.new.facebook, tok.new.tell, tok.new.phone_alt, tok.new.mail, a.user_id],
                 (err, resuuuu)=>{
@@ -40,6 +44,7 @@ export class AddService {
                         res.status(200).json({ status: true});                            
                     }
                 })
+            conee.end()
         }else{
             res.status(200).json({ status: false });
         }
@@ -48,6 +53,7 @@ export class AddService {
     async addUserParams(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok.auth)
         if(a){
+            const conee = mysql.createConnection(config)
             conee.query("UPDATE user_parametrs SET add_in_flat = ? WHERE user_id = ?",
                 [tok.add_in_flat, a.user_id],
                 (err, resuuuu)=>{
@@ -57,6 +63,7 @@ export class AddService {
                         res.status(200).json({ status: true});                            
                     }
                 })
+            conee.end()
         }else{
             res.status(200).json({ status: false });
         }

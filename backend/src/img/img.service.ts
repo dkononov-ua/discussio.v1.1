@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { rename, unlink, readFile } from 'fs';
 import { RowDataPacket } from 'mysql2';
 import { AppService } from 'src/app.service';
@@ -19,6 +20,7 @@ export class ImgService {
         if (a && fl && files) {
             const type_file = '.' + files.mimetype.split('/')[1]
             if(type_file == '.jpg' || type_file == '.png' || type_file == '.img' || type_file == '.jpeg' || type_file == '.webp'){
+                const conee = mysql.createConnection(config)
                 conee.query("INSERT INTO flat_img (flat_id, img) VALUES (?, ?)", [inf.flat_id, files.filename + type_file], (err, resuuuu) => {
                     if (err) {
                         unlink("../../code/Static/" + files.filename, () => {
@@ -72,6 +74,7 @@ export class ImgService {
                                         });
                                 });
                             })
+                            conee.end()
                         })
                         res.status(200).json({ status: "Збережено" });
                     }
@@ -105,6 +108,7 @@ export class ImgService {
         if (a && files) {
             const type_file = '.' + files.mimetype.split('/')[1]
             if(type_file == '.jpg' || type_file == '.png' || type_file == '.img' || type_file == '.jpeg' || type_file == '.webp'){
+                const conee = mysql.createConnection(config)
                 conee.query('SELECT * FROM user_img WHERE user_id = ?;', [a.user_id], (er, re:any) => {
                     try{if (re[0].img != "user_default.svg") {
                         conee.query('DELETE FROM user_img WHERE img = ?', [re[0].img])
@@ -146,6 +150,7 @@ export class ImgService {
                                                         unlink(inputFile, () => { })
                                                         res.status(200).json({ status: "Збережено" });
                                                     }
+                                                    conee.end()
                                                 })
                                         })
                                         .catch((err) => {
@@ -159,6 +164,7 @@ export class ImgService {
                         })
                     })
                 })
+                conee.end()
             }else{
                 unlink("../../code/Static/" + files.filename, () => {
                     res.status(200).json({ status: "Помилковий формат" });
@@ -206,6 +212,7 @@ export class ImgService {
                                         sharp(inputFile).resize(width, height)
                                             .toFile(outputFile)
                                             .then(() => {
+                                                const conee = mysql.createConnection(config)
                                                 conee.query("INSERT INTO filling (flat_id, img, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?, ?)", [b.flat_id, files.filename + type_file, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                                                     (errrr) => {
                                                         if (errrr) {
@@ -217,6 +224,7 @@ export class ImgService {
                                                             res.status(200).json({ status: "Збережено" });
                                                         }
                                                     })
+                                                conee.end()
                                             })
                                             .catch((err) => {
                                                 unlink("../../code/Static/" + files.filename + type_file, () => { })
@@ -238,14 +246,16 @@ export class ImgService {
                         }
                     }
                 }else{
+                    const conee = mysql.createConnection(config)
                     conee.query("INSERT INTO filling (flat_id, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?)", [b.flat_id, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                     (errr) => {
-                    if (errr) {
-                        res.status(200).json({ status: "Помилка збереження" });
-                    } else {
-                        res.status(200).json({ status: "Збережено" });
-                    }
-                })
+                        if (errr) {
+                            res.status(200).json({ status: "Помилка збереження" });
+                        } else {
+                            res.status(200).json({ status: "Збережено" });
+                        }
+                    })
+                    conee.end()
                 }
             }else{
                 let admin = await this.appService.citizen(a.user_id, b.flat_id)
@@ -276,6 +286,7 @@ export class ImgService {
                                             sharp(inputFile).resize(width, height)
                                                 .toFile(outputFile)
                                                 .then(() => {
+                                                    const conee = mysql.createConnection(config)
                                                     conee.query("INSERT INTO filling (flat_id, img, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?, ?)", [b.flat_id, files.filename + type_file, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                                                         (errrr) => {
                                                             if (errrr) {
@@ -287,6 +298,7 @@ export class ImgService {
                                                                 res.status(200).json({ status: "Збережено" });
                                                             }
                                                         })
+                                                        conee.end()
                                                 })
                                                 .catch((err) => {
                                                     unlink("../../code/Static/" + files.filename + type_file, () => { })
@@ -308,6 +320,7 @@ export class ImgService {
                             }
                         }
                     }else{
+                        const conee = mysql.createConnection(config)
                         conee.query("INSERT INTO filling (flat_id, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?)", [b.flat_id, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                         (errr) => {
                             if (errr) {
@@ -316,6 +329,7 @@ export class ImgService {
                                 res.status(200).json({ status: "Збережено" });
                             }
                         })
+                        conee.end()
                     }
                 }else{
                     try {
@@ -352,7 +366,9 @@ export class ImgService {
                         let sssss = await this.Service.getComunalMo(b.flat_id, b.comunal_name,b.when_pay_y, b.when_pay_m)
                         if(sssss[0]){
                             try{
+                                const conee = mysql.createConnection(config)
                                 conee.query('DELETE FROM comunal_img WHERE flat_id = ? AND comunal_name = ? AND when_pay_y = ? AND when_pay_m = ?', [sssss[0].flat_id, sssss[0].comunal_name, String(sssss[0].when_pay_y), sssss[0].when_pay_m])
+                                conee.end()
                                 unlink("../../code/Static/comunal/" + sssss[0].img, (e) => { console.log(e) })
                             }catch(err){}
                         }
@@ -421,7 +437,9 @@ export class ImgService {
                             let sssss = await this.Service.getComunalMo(b.flat_id, b.comunal_name,b.when_pay_y, b.when_pay_m)
                             if(sssss[0]){
                                 try{
+                                    const conee = mysql.createConnection(config)
                                     conee.query('DELETE FROM comunal_img WHERE flat_id = ? AND comunal_name = ? AND when_pay_y = ? AND when_pay_m = ?', [sssss[0].flat_id, sssss[0].comunal_name, String(sssss[0].when_pay_y), sssss[0].when_pay_m])
+                                    conee.end()
                                     unlink("../../code/Static/comunal/" + sssss[0].img, (e) => { console.log(e) })
                                 }catch(err){}
                             }

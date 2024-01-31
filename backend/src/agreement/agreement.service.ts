@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
@@ -65,6 +66,7 @@ export class AgreementService {
         if(a){
             let agree = await this.Service.getAgreement(tok.agreement_id, tok.flat_id, a.user_id)
             if(agree){
+                const conee = mysql.createConnection(config)
                 conee.query(
                     "UPDATE agreement SET i_agree = ? WHERE agreement_id = ?",[tok.i_agree, agree.agreement_id],(err,result)=>{
                         if(err){
@@ -74,6 +76,7 @@ export class AgreementService {
                         }                                                                             
                     }
                 )
+                conee.end()
             }else{
                 res.status(200).json({ status: "Немає угоди" });
             }
@@ -89,6 +92,7 @@ export class AgreementService {
             if(fl){
                 let agree = await this.Service.getAgreement(tok.agreement_id, fl.flat_id, tok.user_id)
                 if (agree){
+                    const conee = mysql.createConnection(config)
                     conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
                     conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
                     conee.query(
@@ -96,6 +100,7 @@ export class AgreementService {
                             res.status(200).json({ status: true });
                         }
                     )
+                    conee.end()
                 }else{
                     res.status(200).json({ status: false });
                 }
@@ -104,12 +109,14 @@ export class AgreementService {
                 if(admin.acces_agreement === 1){
                     let agree = await this.Service.getAgreement(tok.agreement_id, admin.flat_id, tok.user_id)
                     if (agree){
+                        const conee = mysql.createConnection(config)
                         conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
                         conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
                         conee.query(
                             'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
                                 res.status(200).json({ status: true });
                             })
+                        conee.end()
                     }else{
                         res.status(200).json({ status: false });
                     }
@@ -127,9 +134,11 @@ export class AgreementService {
         if(a){
             let agree = await this.Service.getAgreement(tok.agreement_id, tok.flat_id, a.user_id)
             if(agree){
+                const conee = mysql.createConnection(config)
                 conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
                 conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
                 conee.query('DELETE FROM agreement WHERE agreement_id = ?;', [agree.agreement_id])
+                conee.end()
                 res.status(200).json({ status: true });
             }else{
                 res.status(200).json([{ status: false }]);
@@ -308,8 +317,10 @@ export class AgreementService {
             if(fl){
                 let agree = await this.Service.getAgreement(tok.agreement_id, fl.flat_id, tok.user_id)
                 if (agree){
+                    const conee = mysql.createConnection(config)
                     conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
                     conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                    conee.end()
                     res.status(200).json({ status: "Видалено" });
                 }else{
                     res.status(200).json({ status: "Данні введено не правильно" });
@@ -319,8 +330,10 @@ export class AgreementService {
                 if(admin){
                     let agree = await this.Service.getAgreement(tok.agreement_id, admin.flat_id, tok.user_id)
                     if (agree){
+                        const conee = mysql.createConnection(config)
                         conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
                         conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                        conee.end()
                         res.status(200).json({ status: "Видалено" });
                     }else{
                         res.status(200).json({ status: "Данні введено не правильно" });

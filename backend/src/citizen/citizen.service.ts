@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
-import conee from "src/db";
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { AppService } from "src/app.service";
 import { Service } from "./service";
 
@@ -18,6 +19,7 @@ export class CitizenService {
         if(citizen){
           const agent_id = await this.appService.agent(tok.flat_id);
           if(agent_id === false || agent_id.user_id === tok.user_id){
+            const conee = mysql.createConnection(config)
             conee.query(
               "UPDATE citizen SET acces_added = ?, acces_admin = ?, acces_services = ?, acces_comunal = ?, acces_filling = ?, acces_subs = ?, acces_discuss = ?, acces_agreement = ?, acces_citizen = ?, acces_comunal_indexes = ?, acces_agent = ?, acces_flat_features = ?, acces_flat_chats = ? WHERE flat_id = ? AND user_id = ?",
               [
@@ -41,9 +43,11 @@ export class CitizenService {
                 res.status(200).json({ status: ")" });
               }
             );
+            conee.end()
           }else{
             const agent_id = await this.appService.agent(tok.flat_id);
             if(agent_id){
+              const conee = mysql.createConnection(config)
               conee.query(
                 "UPDATE citizen SET acces_added = ?, acces_admin = ?, acces_services = ?, acces_comunal = ?, acces_filling = ?, acces_subs = ?, acces_discuss = ?, acces_agreement = ?, acces_citizen = ?, acces_comunal_indexes = ?, acces_flat_features = ?, acces_flat_chats = ? WHERE flat_id = ? AND user_id = ?",
                 [
@@ -66,6 +70,7 @@ export class CitizenService {
                   res.status(200).json({ status: ")" });
                 }
               );
+              conee.end()
             }else{
               res.status(200).json({ status: false });
             }
@@ -80,6 +85,7 @@ export class CitizenService {
           if(citizen){
             const agent_id = await this.appService.agent(tok.flat_id);
             if(agent_id === false || agent_id.user_id === tok.user_id){
+              const conee = mysql.createConnection(config)
               conee.query(
                 "UPDATE citizen SET acces_added = ?, acces_admin = ?, acces_services = ?, acces_comunal = ?, acces_filling = ?, acces_subs = ?, acces_discuss = ?, acces_agreement = ?, acces_citizen = ?, acces_comunal_indexes = ?, acces_agent = ?, acces_flat_features = ?, acces_flat_chats = ? WHERE flat_id = ? AND user_id = ?",
                 [
@@ -103,9 +109,11 @@ export class CitizenService {
                   res.status(200).json({ status: ")" });
                 }
               );
+              conee.end()
             }else{
               const agent_id = await this.appService.agent(tok.flat_id);
               if(agent_id){
+                const conee = mysql.createConnection(config)
                 conee.query(
                   "UPDATE citizen SET acces_added = ?, acces_admin = ?, acces_services = ?, acces_comunal = ?, acces_filling = ?, acces_subs = ?, acces_discuss = ?, acces_agreement = ?, acces_citizen = ?, acces_comunal_indexes = ?, acces_flat_features = ?, acces_flat_chats = ? WHERE flat_id = ? AND user_id = ?",
                   [
@@ -128,6 +136,7 @@ export class CitizenService {
                     res.status(200).json({ status: ")" });
                   }
                 );
+                conee.end()
               }else{
                 res.status(200).json({ status: false });
               }
@@ -139,6 +148,7 @@ export class CitizenService {
           if(admin.acces_services === 1 && admin.acces_comunal_indexes === 1 && admin.acces_added === 1 && admin.acces_citizen === 1){
             const citizen = await this.appService.citizen(tok.user_id, tok.flat_id);
             if(citizen){
+              const conee = mysql.createConnection(config)
               conee.query(
                 "UPDATE citizen SET acces_services = ?, acces_comunal = ? WHERE flat_id = ? AND user_id = ?",
                 [tok.acces_services, tok.acces_comunal_indexes, admin.flat_id, citizen.user_id],
@@ -146,6 +156,7 @@ export class CitizenService {
                   res.status(200).json({ status: ")" });
                 }
               );
+              conee.end()
             }else{
               res.status(200).json({ status: false });
             }
@@ -170,8 +181,11 @@ export class CitizenService {
         if(citizen === false){
           const agre = await this.Service.getUserSaveAgreement(tok.flat_id, tok.user_id);
           if(agre){
+            const conee = mysql.createConnection(config)
             conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [agre.subscriber_id, fl.flat_id], (err, resul)=>{console.log(err)});
             conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, agre.user_id], (err, resul)=>{1});
+            conee.end()
+            res.status(200).json({ status: true });
           }else{
             res.status(200).json({ status: false });
           }
@@ -185,8 +199,11 @@ export class CitizenService {
           if(citizen === false){
             const agre = await this.Service.getUserSaveAgreement(tok.flat_id, tok.user_id);
             if(agre){
+              const conee = mysql.createConnection(config)
               conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [agre.subscriber_id, admin.flat_id], (err, resul)=>{console.log(err)});
               conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, agre.user_id], (err, resul)=>{1});
+              conee.end()
+              res.status(200).json({ status: true });
             }else{
               res.status(200).json({ status: false });
             }
@@ -210,25 +227,31 @@ export class CitizenService {
       const fl = await this.appService.flatCheck(a.user_id, tok.flat_id);
       if(fl){
         const citizen = await this.appService.citizen(tok.user_id, fl.flat_id);
+        const conee = mysql.createConnection(config)
         conee.query("DELETE FROM citizen WHERE flat_id = ? AND user_id = ?;", [
           fl.flat_id,
           citizen.user_id,
         ]);
+        conee.end()
       res.status(200).json({ status: true });
       }else{
         const admin = await this.appService.citizen(a.user_id, tok.flat_id);
         if(admin.acces_admin === 1  && admin.acces_citizen === 1){
           const citizen = await this.appService.citizen(tok.user_id, admin.flat_id);
+          const conee = mysql.createConnection(config)
           conee.query("DELETE FROM citizen WHERE flat_id = ? AND user_id = ?;", [
             admin.flat_id,
             citizen.user_id,
           ]);
+          conee.end()
           res.status(200).json({ status: true });
         }else if(admin){
+          const conee = mysql.createConnection(config)
           conee.query("DELETE FROM citizen WHERE flat_id = ? AND user_id = ?;", [
             admin.flat_id,
             a.user_id,
           ]);
+          conee.end()
         }
       }
     }else{

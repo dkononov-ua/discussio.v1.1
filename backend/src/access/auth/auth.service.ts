@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { AppService } from 'src/app.service';
-import conee from 'src/db';
 
 
 

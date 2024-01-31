@@ -1,9 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
-import * as mm from 'mysql2/promise'
-import config from 'src/dbpar';
-import conect from 'src/db_promise';
+import conect2 from 'src/db_promise';
 
 
 // const conect = mm.createConnection(config)
@@ -14,7 +11,9 @@ import conect from 'src/db_promise';
 export class Service {
 
   async secure(email: string) {
-    let [rows2, fields2] = await (await conect).execute('SELECT * FROM use_security WHERE email = ? LIMIT 1;', [email])
+    const conect = await conect2.getConnection();
+    let [rows2, fields2] = await conect.execute('SELECT * FROM use_security WHERE email = ? LIMIT 1;', [email])
+    conect.release();
     if (rows2[0] !== undefined) {
       return rows2[0]
     } else {
@@ -23,8 +22,10 @@ export class Service {
   }
 
   async secure_check(email: string, code:string) {
-    let [rows2, fields2] = await (await conect).execute('SELECT * FROM use_security WHERE email = ? AND em_pass = ? LIMIT 1;', [email, code])
-    let [rows, fields] = await (await conect).execute('SELECT * FROM use_security WHERE email = ? LIMIT 1;', [email])
+    const conect = await conect2.getConnection();
+    let [rows2, fields2] = await conect.execute('SELECT * FROM use_security WHERE email = ? AND em_pass = ? LIMIT 1;', [email, code])
+    let [rows, fields] = await conect.execute('SELECT * FROM use_security WHERE email = ? LIMIT 1;', [email])
+    conect.release();
     if (rows2[0] !== undefined) {
       return rows[0]
     } else {
@@ -34,9 +35,11 @@ export class Service {
 
   async new_secure(inf: any) {
     let numb = Math.floor(Math.random()*900000) + 100000
-    let [rows2, fields2] = await (await conect).execute('DELETE FROM use_security WHERE email = ?;', [inf.regEmail])    
-    let [rows, fields] = await (await conect).execute('INSERT INTO use_security (email, password, em_pass, attempt_counter, dob) VALUES (?, ?, ?, ?, ?)',
-     [inf.regEmail, inf.regPassword, numb, 0, new Date(inf.dob)])   
+    const conect = await conect2.getConnection();
+    let [rows2, fields2] = await conect.execute('DELETE FROM use_security WHERE email = ?;', [inf.regEmail])    
+    let [rows, fields] = await conect.execute('INSERT INTO use_security (email, password, em_pass, attempt_counter, dob) VALUES (?, ?, ?, ?, ?)',
+     [inf.regEmail, inf.regPassword, numb, 0, new Date(inf.dob)])  
+    conect.release(); 
     if (rows) {
       return numb
     } else {
@@ -46,9 +49,11 @@ export class Service {
 
   async new_secureforgotpass(inf: any) {
     let numb = Math.floor(Math.random()*900000) + 100000
-    let [rows2, fields2] = await (await conect).execute('DELETE FROM use_security WHERE email = ?;', [inf.email])    
-    let [rows, fields] = await (await conect).execute('INSERT INTO use_security (email, em_pass, attempt_counter) VALUES (?, ?, ?)',
-     [inf.email, numb, 0])   
+    const conect = await conect2.getConnection();
+    let [rows2, fields2] = await conect.execute('DELETE FROM use_security WHERE email = ?;', [inf.email])    
+    let [rows, fields] = await conect.execute('INSERT INTO use_security (email, em_pass, attempt_counter) VALUES (?, ?, ?)',
+     [inf.email, numb, 0]) 
+    conect.release();  
     if (rows) {
       return numb
     } else {
@@ -59,8 +64,9 @@ export class Service {
 
 
   async delete_secure(email: any) {
-
-    let [rows2, fields2] = await (await conect).execute('DELETE FROM use_security WHERE email = ?;', [email])      
+    const conect = await conect2.getConnection();
+    let [rows2, fields2] = await conect.execute('DELETE FROM use_security WHERE email = ?;', [email])
+    conect.release();      
     if (rows2) {
       return true
     } else {
@@ -70,8 +76,10 @@ export class Service {
 
 
   async updete_secure(inf: any) {
-    let [rows, fields] = await (await conect).execute('UPDATE use_security SET attempt_counter = ? WHERE email = ?;',
-     [inf.attempt_counter + 1, inf.regEmail])    
+    const conect = await conect2.getConnection();
+    let [rows, fields] = await conect.execute('UPDATE use_security SET attempt_counter = ? WHERE email = ?;',
+     [inf.attempt_counter + 1, inf.regEmail])
+    conect.release();    
     if (rows[0] !== undefined) {
       return rows[0]
     } else {
@@ -82,7 +90,9 @@ export class Service {
 
   async registercheck(mail:string) {
     try{
-      let [rows, fields] = await (await conect).execute('SELECT * FROM users WHERE user_mail = ?;', [mail])
+      const conect = await conect2.getConnection();
+      let [rows, fields] = await conect.execute('SELECT * FROM users WHERE user_mail = ?;', [mail])
+      conect.release();
       if (rows[0] !== undefined) {
       return rows[0]
     } else {

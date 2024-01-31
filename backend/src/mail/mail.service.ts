@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import sendMail from 'src/email';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class MailService {
 
     // Зміна почти
     async sendmailChangeCode(inf: any, res: any): Promise<any> {
+        const conee = mysql.createConnection(config)
         conee.query('SELECT * FROM users WHERE email = ? AND password = ?;',[inf.auth.email, inf.auth.password],
             (_err, results) => {
                 if (results[0] !== undefined ) { 
@@ -33,9 +35,11 @@ export class MailService {
                 }
             }
         )
+        conee.end()
     }
 
     async getmailChangeCode(inf: any, res: any): Promise<any> {
+        const conee = mysql.createConnection(config)
         conee.query('SELECT * FROM users WHERE email = ? AND password = ?;',[inf.auth.email, inf.auth.password],
             (_err, results) => {
                 if (results[0] !== undefined ) {  
@@ -54,12 +58,14 @@ export class MailService {
                 }
             }
         )
+        conee.end()
     }
 
 
 
     // Видалення аккаунту
     async getDeleteAkkCode(inf: any, res: any): Promise<any> {
+        const conee = mysql.createConnection(config)
         conee.query('SELECT * FROM users WHERE email = ? AND password = ?;',[inf.auth.email, inf.auth.password],
         (_err, results) => {
             if (results[0] !== undefined ) {
@@ -92,9 +98,11 @@ export class MailService {
             }
         }
         )
+        conee.end()
     }
     
     async sendDeleteAkkCode(inf: any, res: any): Promise<any> {
+        const conee = mysql.createConnection(config)
         conee.query('SELECT * FROM users WHERE email = ? AND password = ?;',[inf.auth.email, inf.auth.password],
         (_err, results) => {
             if (results[0] !== undefined ) {
@@ -113,11 +121,13 @@ export class MailService {
             }
         }
         )
+        conee.end()
     }
 
 
     // Забули пароль
     async getForgotPassCode(inf: any, res: any): Promise<any> {
+        const conee = mysql.createConnection(config)
         conee.query('SELECT * FROM use_security WHERE email = ? AND em_pass = ? AND check_name = forg_pass;',[inf.auth.email, inf.pass],
         (e, r)=>{
             if(r !== undefined){
@@ -126,11 +136,12 @@ export class MailService {
                 [inf.pass, inf.email]);
                 res.status(200).json({ status: "Пароль змінено" });
             }
-        })                   
+        })
+        conee.end()                   
     }
             
     async sendForgotPassCode(inf: any, res: any): Promise<any> {
-
+        const conee = mysql.createConnection(config)
         conee.query('DELETE FROM use_security WHERE email = ? AND check_name = forg_pass;', [inf.email])
         let numb = Math.floor(Math.random()*1000000)
         const html = `<p>Служба безпеки Discusio</p><h1 style="color: blue;">Ваш код для отримання паролю: ${numb}</h1>`;
@@ -140,7 +151,7 @@ export class MailService {
                 sendMail(html, inf.email)
                 res.status(200).json({ status: "На ваші дві пошти було надіслано код безпеки"});
         })  
-        
+        conee.end()
         
     }
 

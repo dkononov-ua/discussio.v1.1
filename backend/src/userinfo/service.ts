@@ -1,9 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
-import * as mm from 'mysql2/promise'
-import config from 'src/dbpar';
-import conect from 'src/db_promise';
+import conect2 from 'src/db_promise';
 
 
 // const conect = mm.createConnection(config)
@@ -15,7 +12,9 @@ export class Service {
 
 
   async getUserImg(tok: any) {
-    let [rows, fields] = await (await conect).execute('SELECT * FROM user_img WHERE user_id = ?;', [tok.user_id])
+    const conect = await conect2.getConnection();
+    let [rows, fields] = await conect.execute('SELECT * FROM user_img WHERE user_id = ?;', [tok.user_id])
+    conect.release();
     if (rows[0] !== undefined) {
       return rows
     } else {
@@ -24,7 +23,9 @@ export class Service {
   }
 
   async getContacts(tok: any) {
-    let [rows, fields] = await (await conect).execute('SELECT * FROM contacts WHERE user_id = ?;', [tok.user_id])
+    const conect = await conect2.getConnection();
+    let [rows, fields] = await conect.execute('SELECT * FROM contacts WHERE user_id = ?;', [tok.user_id])
+    conect.release();
     if (rows[0] !== undefined) {
       return rows[0]
     } else {
@@ -35,7 +36,9 @@ export class Service {
   
 
   async countagree(user_id: string){
-    let [rows, fields] = await (await conect).execute("SELECT COUNT(*) AS total FROM agreement WHERE subscriber_id = ? AND i_agree IS NULL", [user_id])
+    const conect = await conect2.getConnection();
+    let [rows, fields] = await conect.execute("SELECT COUNT(*) AS total FROM agreement WHERE subscriber_id = ? AND i_agree IS NULL", [user_id])
+    conect.release();
     if (rows[0] !== undefined) {
       return rows[0]
     } else {

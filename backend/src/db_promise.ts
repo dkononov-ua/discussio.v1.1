@@ -13,8 +13,8 @@ import config from './dbpar'
 
 // }
 
-const conect = mmm.createConnection(config)
+// const conect = mmm.createConnection(config)
 
+const conect2 = mmm.createPool(config)
 
-
-export default conect
+export default conect2

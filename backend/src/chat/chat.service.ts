@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from "src/db";
 import { AppService } from "src/app.service";
 import { Service } from './service';
 

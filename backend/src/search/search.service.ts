@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
@@ -193,6 +194,7 @@ export class SearchService {
 
 
         query += inf + metod;
+        const conee = mysql.createConnection(config)
         conee.query(query, params, async (_err, results: Array<any> | any) => {
             let count: any
             try{
@@ -221,17 +223,19 @@ export class SearchService {
                                 e.rating = rating 
                                 resolve(e)
                             }
+                            
                         })
                     })
                     promises.push(promise)
                 });
             }
-
+            
             Promise.all(promises).then((img) => {
                 res.status(200).json({ img, count });
             }).catch((error) => {
                 res.status(500).json({ error: error.message });
             })
+            conee.end()
         })
 
         }catch(errrr){
@@ -460,7 +464,7 @@ export class SearchService {
 
 
                 query += inf + metod;
-
+                const conee = mysql.createConnection(config)
                 conee.query(query, params, async (_err, results: Array<any> | any) => {
                     let count: any
                     try{
@@ -472,6 +476,7 @@ export class SearchService {
                      
                     
                 })
+                conee.end()
 
             } else {
                 res.status(200).json({ status: false });

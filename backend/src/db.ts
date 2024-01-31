@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import * as mysql from 'mysql2'
-import * as mmm from 'mysql2/promise'
-import config from './dbpar'
+// import * as mysql from 'mysql2'
+// import * as mmm from 'mysql2/promise'
+// import config from './dbpar'
 
 
 // const config = {
@@ -14,8 +14,7 @@ import config from './dbpar'
 
 // }
 
-const conee = mysql.createConnection(config)
+// const conee = mysql.createConnection(config)
 
-
-
-export default conee
+// conee.end()
+// export default conee

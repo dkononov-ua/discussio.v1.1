@@ -11,6 +11,12 @@ export class UserinfoController {
       await this.userinfoService.getUserinfoService(tok, res);
     }
 
+    @Post('agree')
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    async getAgree(@Response() res, @Body() tok: Object): Promise<any> {
+      await this.userinfoService.getUserAgree(tok, res);
+    }
+
 
     @Post('agent')
     // eslint-disable-next-line @typescript-eslint/ban-types

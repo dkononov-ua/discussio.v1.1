@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
@@ -25,6 +24,14 @@ export class UserinfoService {
         let par = await this.appService.getUserParams(a.user_id)
         res.status(200).json({ status: true, inf: a, cont: contacts, img: "Фото не було знайдено", agree: agree, parametrs: par})
       }
+    }
+  }
+
+  async getUserAgree(tok: any, res: any): Promise<any> {
+    let a = await this.appService.authentification(tok)
+    if(a){
+      let agree = await this.Service.countagree(a.user_id) 
+        res.status(200).json({ status: true, agree: agree})
     }
   }
 

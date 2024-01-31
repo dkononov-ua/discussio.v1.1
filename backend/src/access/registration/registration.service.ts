@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { AppService } from 'src/app.service';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import sendMail from 'src/email';
 import { Service } from '../service';
 
@@ -13,6 +14,7 @@ export class RegistrationService {
 
     async getRegister(inf: any, res: any): Promise<any> {
       if(inf.regEmail.indexOf("@discussio.beta") != -1){
+        const conee = mysql.createConnection(config)
         conee.query("SELECT COUNT(*) AS total FROM users",(er, re)=>{
           if(re[0].total <= 100){
             try{
@@ -38,7 +40,8 @@ export class RegistrationService {
                     conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
                     conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
                   res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword, userName: inf.userName});
-                }  
+                }
+                conee.end()  
                 },
               );}else{
                 res.status(200).json({ status: "Не правильно передані данні"});
@@ -90,6 +93,7 @@ export class RegistrationService {
         if(secure){
           let check = await this.Service.secure_check(inf.regEmail, inf.passCode)
           if(check.attempt_counter < 5){
+            const conee = mysql.createConnection(config)
             conee.query(
               'INSERT INTO users (user_mail, password, dob, data_create) VALUES (?, ?, ?, ?)',
               // eslint-disable-next-line prettier/prettier
@@ -107,7 +111,8 @@ export class RegistrationService {
                 conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
                 conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
                 res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword});
-              }  
+              }
+              conee.end()  
               },
             );
           }else{
@@ -150,6 +155,7 @@ export class RegistrationService {
         if(secure){
           let check = await this.Service.secure_check(inf.email, inf.passCode)
           if(check.attempt_counter < 5){
+            const conee = mysql.createConnection(config)
             conee.query(
               'UPDATE users SET password = ? WHERE user_mail = ?;',
               // eslint-disable-next-line prettier/prettier
@@ -160,6 +166,7 @@ export class RegistrationService {
                 res.status(200).json({ status: true, email: check.email, password: inf.password});
               },
             );
+            conee.end()
           }else{
             await this.Service.updete_secure(check) 
             res.status(200).json({ status: "Не правильний код"});

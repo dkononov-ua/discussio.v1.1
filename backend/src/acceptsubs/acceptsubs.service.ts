@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import conee from 'src/db';
+import * as mysql from 'mysql2';
+import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
@@ -19,8 +20,10 @@ export class AcceptSubsService {
                 if(await this.appService.citizen(tok.user_id, tok.flat_id) === false){
                     let par = await this.appService.getUserParams(tok.user_id)
                     if(par.add_in_flat == 1){
+                        const conee = mysql.createConnection(config)
                         conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id],(err, resul)=>{console.log(err)})
                         conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id],(err, resul)=>{1})
+                        conee.end()
                         res.status(200).json({ status: true });
                     }else{
                         res.status(200).json({ status: "Користувач заборонив себе додавати" });
@@ -45,7 +48,9 @@ export class AcceptSubsService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl || (await this.appService.citizen(a.user_id, tok.flat_id)).acces_discuss === 1){
                 if(await this.appService.accept_subs(tok.user_id, tok.flat_id)){
+                    const conee = mysql.createConnection(config)
                     conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, accept_subs.user_id])
+                    conee.end()
                     res.status(200).json({ status: true });
                 }else{
                     res.status(200).json({ status: "Дискусії немає" });
@@ -61,7 +66,9 @@ export class AcceptSubsService {
     async deleteYSubs(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok.auth)
         if(a){
+            const conee = mysql.createConnection(config)
             conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
+            conee.end()
             res.status(200).json({ status: true });
         }else{
             res.status(200).json({ status:  "Авторизуйтесь" });

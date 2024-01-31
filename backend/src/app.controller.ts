@@ -1,6 +1,4 @@
 import { Controller, Post, Response, Body, Get, UseInterceptors, UploadedFile, Res, Param } from '@nestjs/common';
-import * as mmm from 'mysql2/promise'
-import conee from './db';
 
 import { AppService } from './app.service';
 // import authentification from './sqlfunc/auth';
