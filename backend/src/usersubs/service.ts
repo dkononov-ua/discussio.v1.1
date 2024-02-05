@@ -24,6 +24,7 @@ export class Service {
   async countUserSubs(flat_id: string){
     const conect = await conect2.getConnection();
     let [rows, fields] = await conect.execute("SELECT COUNT(*) AS total FROM user_subscribes WHERE flat_id = ?", [flat_id])
+    conect.release();
     if (rows[0] !== undefined) {
       return rows[0].total
     } else {
