@@ -111,10 +111,15 @@ export class FlatinfoService {
                     conee.query('SELECT * FROM parametrs WHERE flat_id = ?', [fl.flat_id],
                         (_err, param_results) => {
                             conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [fl.flat_id], (_err, img_results) => {
-                                if (img_results[0] === undefined) {
+
+                                if(Array.isArray(img_results)){
+                                    if (img_results[0] === undefined) {
+                                        res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: "Картинок нема" });
+                                    } else {
+                                        res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: img_results });
+                                    }
+                                }else{
                                     res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: "Картинок нема" });
-                                } else {
-                                    res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: img_results });
                                 }
                                 conee.end()
                             })
@@ -131,17 +136,20 @@ export class FlatinfoService {
                                 (_err, param_results) => {
                                     conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id], (_err, img_results) => {
                                         
-                                        if (img_results[0] === undefined) {
+                                        if(Array.isArray(img_results)){
+                                            if (img_results[0] === undefined) {
+                                                res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: "Картинок нема", acces: admin });
+                                            } else {
+                                                res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: img_results, acces: admin });
+                                            }
+                                        }else{
                                             res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: "Картинок нема", acces: admin });
-                                        } else {
-                                            res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: img_results, acces: admin });
                                         }
                                         conee.end()
                                     })
                                 })
                         })
                     })
-                    conee.end()
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
