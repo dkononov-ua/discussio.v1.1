@@ -116,55 +116,59 @@ export class ImgService {
                     }else if(re[0].img == "user_default.svg"){
                         conee.query('DELETE FROM user_img WHERE img = ?', [re[0].img])
                     }}catch(err){}
-                    
-                    rename("../../code/Static/" + files.filename, "../../code/Static/" + files.filename + type_file, (err) => {
-                        const inputFile = "../../code/Static/" + files.filename + type_file;
-                        const outputFile = "../../code/Static/users/" + files.filename + type_file;
-                        readFile(inputFile, (err, data) => {
-                            if (err) {
-                                console.error(err);
-                                return;
-                            }
-                            sharp(data)
-                                .metadata()
-                                .then((metadata) => {
-                                    let width: number
-                                    let height: number
-                                    if (metadata.width >= metadata.height) {
-                                        height = 600;// нова висота
-                                        width = Math.floor((height * metadata.width) / metadata.height);// нова ширина
-                                    } else if(metadata.width <= metadata.height) {
-                                        height = 850;// нова висота
-                                        width = Math.floor((height * metadata.width) / metadata.height);// нова ширина
-                                    }
-                                    sharp(inputFile).resize(width, height)
-                                        .toFile(outputFile)
-                                        .then(() => {
-                                            conee.query("INSERT INTO user_img (user_id, img) VALUES (?, ?)", [a.user_id, files.filename + type_file],
-                                                (errrr) => {
-                                                    if (errrr) {
-                                                        unlink(inputFile, () => { })
-                                                        unlink(outputFile, () => { })
-                                                        res.status(200).json({ status: "Помилка збереження" });
-                                                    } else {
-                                                        unlink(inputFile, () => { })
-                                                        res.status(200).json({ status: "Збережено" });
-                                                    }
-                                                    conee.end()
-                                                })
-                                        })
-                                        .catch((err) => {
-                                            unlink("../../code/Static/" + files.filename + type_file, () => { })
-                                            console.error('Помилка при зміні розміру зображення:', err);
-                                        });
-                                })
-                                .catch((error) => {
-                                    console.error(error);
-                                });
+
+                    try{
+                        rename("../../code/Static/" + files.filename, "../../code/Static/" + files.filename + type_file, (err) => {
+                            const inputFile = "../../code/Static/" + files.filename + type_file;
+                            const outputFile = "../../code/Static/users/" + files.filename + type_file;
+                            readFile(inputFile, (err, data) => {
+                                if (err) {
+                                    console.error(err);
+                                    return;
+                                }
+                                sharp(data)
+                                    .metadata()
+                                    .then((metadata) => {
+                                        let width: number
+                                        let height: number
+                                        if (metadata.width >= metadata.height) {
+                                            height = 600;// нова висота
+                                            width = Math.floor((height * metadata.width) / metadata.height);// нова ширина
+                                        } else if(metadata.width <= metadata.height) {
+                                            height = 850;// нова висота
+                                            width = Math.floor((height * metadata.width) / metadata.height);// нова ширина
+                                        }
+                                        sharp(inputFile).resize(width, height)
+                                            .toFile(outputFile)
+                                            .then(() => {
+                                                conee.query("INSERT INTO user_img (user_id, img) VALUES (?, ?)", [a.user_id, files.filename + type_file],
+                                                    (errrr) => {
+                                                        if (errrr) {
+                                                            unlink(inputFile, () => { })
+                                                            unlink(outputFile, () => { })
+                                                            res.status(200).json({ status: "Помилка збереження" });
+                                                        } else {
+                                                            unlink(inputFile, () => { })
+                                                            res.status(200).json({ status: "Збережено" });
+                                                        }
+                                                        conee.end()
+                                                    })
+                                            })
+                                            .catch((err) => {
+                                                unlink("../../code/Static/" + files.filename + type_file, () => { })
+                                                console.error('Помилка при зміні розміру зображення:', err);
+                                            });
+                                    })
+                                    .catch((error) => {
+                                        console.error(error);
+                                    });
+                            })
                         })
-                    })
-                })
-                conee.end()
+                    }catch(errrr){
+                        console.error(errrr);
+                        conee.end()
+                    }   
+                })  
             }else{
                 unlink("../../code/Static/" + files.filename, () => {
                     res.status(200).json({ status: "Помилковий формат" });
