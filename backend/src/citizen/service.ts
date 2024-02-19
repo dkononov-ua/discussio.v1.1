@@ -72,7 +72,7 @@ export class Service {
 
   async getIDCitizenFlats(user_id: string, offs: string) {
     const conect = await conect2.getConnection();
-    let [rows, fields] = await conect.execute('SELECT flat_id FROM accept_subs WHERE user_id = ? LIMIT 10 OFFSET ?;', [user_id, offs.toString()])
+    let [rows, fields] = await conect.execute('SELECT flat_id FROM citizen WHERE user_id = ? LIMIT 10 OFFSET ?;', [user_id, offs.toString()])
     conect.release();
     if (rows[0] !== undefined) {
       return rows
