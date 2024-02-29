@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
+import sendMail from 'src/email';
 
 
 
@@ -119,6 +120,42 @@ async getUserinfoPublic(tok: any, res: any): Promise<any> {
   }else{
     res.status(200).json({ status: false})
   }
-
 }
+
+
+async deleteUserFinal(tok: any, res: any): Promise<any> {
+  const a = await this.appService.authentification(tok.auth);
+  if(a){
+    const b = await this.Service.secure_check(a.user_mail ,tok.code)
+    if(b){
+      await this.Service.deleteUser(a.user_id)
+      res.status(200).json({ status: "Видалено"})
+    }else{
+      res.status(200).json({ status: "Невірний код"})
+    }   
+    
+  }else{
+    res.status(200).json({ status: false})
+  }
+}
+
+async deleteUserFirst(tok: any, res: any): Promise<any> {
+  const a = await this.appService.authentification(tok.auth);
+    if(a){ 
+      let numb = await this.Service.new_secure2(a.user_mail)
+      const html = `<p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 16px;">Вас вітає служба безпеки</p>
+      <h1 style="width: 400px; margin: 5px; text-align: center; font-size: 40px; font-weight: 600; color: rgba(0, 0, 0, 0.678);">Discussio</h1>
+      <p style="width: 400px; margin: 5px; font-size: 20px; font-weight: 600; text-align: center; color: rgba(0, 0, 0, 0.678); ">Ваш код підтвердження: </p>
+      <p  style="width: 400px; margin: 5px; border: 1px solid gray; text-align: center; border-radius: 20px; font-size: 40px; font-weight: 600; padding: 10px; color: #ff6347;">${numb}</p>
+      <p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 12px;">Якщо ви не робили ніяких дій на сайті Discussio  проігноруйте це повідомлення</p>
+      <p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 10px;">© Discussio. Developed by Discussio team 2023.</p>
+      `;
+      await sendMail(html, a.user_mail)
+      res.status(200).json({ status: "На вашу пошту було надіслано код безпеки"});
+    }else{  
+      res.status(200).json({ status: false});
+    }
+}
+
+
 }

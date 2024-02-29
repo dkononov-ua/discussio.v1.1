@@ -77,7 +77,7 @@ export class RegistrationService {
           <p style="width: 400px; margin: 5px; font-size: 20px; font-weight: 600; text-align: center; color: rgba(0, 0, 0, 0.678); ">Ваш код підтвердження: </p>
           <p  style="width: 400px; margin: 5px; border: 1px solid gray; text-align: center; border-radius: 20px; font-size: 40px; font-weight: 600; padding: 10px; color: #ff6347;">${numb}</p>
           <p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 12px;">Якщо ви не робили ніяких дій на сайті Discussio  проігноруйте це повідомлення</p>
-          <p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 10px;">© Discussio. Developed by Discussio team 2023.</p>
+          <p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 10px;">© Discussio. Developed by Discussio team.</p>
           `;
           await sendMail(html, inf.regEmail)
           res.status(200).json({ status: "На вашу пошту було надіслано код безпеки"});
