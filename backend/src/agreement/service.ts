@@ -97,7 +97,7 @@ export class Service {
     subscriber_tell,  owner_id, owner_firstName, owner_lastName,  owner_surName, owner_email,
     owner_tell, flat_id, agreementDate, city, street, houseNumber,
     apartment, rent_due_data, penalty, ownership, dateAgreeStart, dateAgreeEnd, transferHouse, whoPayComun, depositPayment, dateAgreeBreakUp, numberVisits, personsReside, vacateHouse,
-    max_penalty, price, area, subscriber_img, owner_img, i_agree, option_flat, room, floor, about_agree FROM agreement WHERE flat_id = ? AND i_agree IS NULL LIMIT 10 OFFSET ?`, [flat_id, offs.toString()])
+    max_penalty, price, area, subscriber_img, owner_img, i_agree, option_flat, room, floor, about_agree, data FROM agreement WHERE flat_id = ? AND i_agree IS NULL LIMIT 10 OFFSET ?`, [flat_id, offs.toString()])
     if (rows[0] !== undefined) {
 
       const a = await Promise.all(rows.map(async (e) => {
@@ -124,7 +124,7 @@ export class Service {
     subscriber_tell,  owner_id, owner_firstName, owner_lastName,  owner_surName, owner_email,
     owner_tell, flat_id, agreementDate, city, street, houseNumber,
     apartment, rent_due_data, penalty, ownership, dateAgreeStart, dateAgreeEnd, transferHouse, whoPayComun, depositPayment, dateAgreeBreakUp, numberVisits, personsReside, vacateHouse,
-    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree FROM agreement WHERE subscriber_id = ? AND i_agree IS NULL LIMIT 10 OFFSET ?`, [user_id, offs.toString()])
+    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree, data FROM agreement WHERE subscriber_id = ? AND i_agree IS NULL LIMIT 10 OFFSET ?`, [user_id, offs.toString()])
     
     if (rows[0] !== undefined) {
       return await Promise.all(rows.map(async (e) => {
@@ -150,7 +150,7 @@ export class Service {
     subscriber_tell,  owner_id, owner_firstName, owner_lastName,  owner_surName, owner_email,
     owner_tell, flat_id, agreementDate, city, street, houseNumber,
     apartment, rent_due_data, penalty, ownership, dateAgreeStart, dateAgreeEnd, transferHouse, whoPayComun, depositPayment, dateAgreeBreakUp, numberVisits, personsReside, vacateHouse,
-    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree FROM agreement WHERE flat_id = ? AND i_agree = true LIMIT 10 OFFSET ?`, [flat_id, offs.toString()])
+    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree, data FROM agreement WHERE flat_id = ? AND i_agree = true LIMIT 10 OFFSET ?`, [flat_id, offs.toString()])
     if (rows[0] !== undefined) {
       return await Promise.all(rows.map(async (e) => {
         let [img, fie]: [Array<any> | any, any] = await conect.execute("SELECT * FROM flat_img WHERE flat_id = ?", [e.flat_id])
@@ -175,7 +175,7 @@ export class Service {
     subscriber_tell,  owner_id, owner_firstName, owner_lastName,  owner_surName, owner_email,
     owner_tell, flat_id, agreementDate, city, street, houseNumber,
     apartment, rent_due_data, penalty, ownership, dateAgreeStart, dateAgreeEnd, transferHouse, whoPayComun, depositPayment, dateAgreeBreakUp, numberVisits, personsReside, vacateHouse,
-    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree FROM agreement WHERE subscriber_id = ? AND i_agree = true LIMIT 10 OFFSET ?`, [user_id, offs.toString()])
+    max_penalty, price, area, subscriber_img, owner_img, option_flat, room, floor, about_agree, data FROM agreement WHERE subscriber_id = ? AND i_agree = true LIMIT 10 OFFSET ?`, [user_id, offs.toString()])
     if (rows[0] !== undefined) {
       return await Promise.all(rows.map(async (e) => {
         let [img, fie]: [Array<any> | any, any] = await conect.execute("SELECT * FROM flat_img WHERE flat_id = ?", [e.flat_id])
