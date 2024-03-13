@@ -7,6 +7,9 @@ import * as mysql from 'mysql2';
 import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
+import conect2 from 'src/db_promise';
+
+
 
 @Injectable()
 export class FlatinfoService {
@@ -18,16 +21,17 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query("UPDATE parametrs SET rooms = ?, repair_status = ?, area = ?, kitchen_area = ?, balcony = ?, floor = ?, option_flat = ? WHERE flat_id = ?",
-                [tok.new.rooms, tok.new.repair_status, tok.new.area, tok.new.kitchen_area, tok.new.balcony, tok.new.floor, tok.new.option_flat, fl.flat_id],
-                (er, rrr) => {
-                    if (er) {
-                        res.status(200).json({ status: "Не правильно передані данні" })
-                    } else {
-                        res.status(200).json({ status: "Параметри успішно додані" });
-                    }
-                })
-                conee.end()
+                try{
+                    conee.query("UPDATE parametrs SET rooms = ?, repair_status = ?, area = ?, kitchen_area = ?, balcony = ?, floor = ?, option_flat = ? WHERE flat_id = ?",
+                    [tok.new.rooms, tok.new.repair_status, tok.new.area, tok.new.kitchen_area, tok.new.balcony, tok.new.floor, tok.new.option_flat, fl.flat_id],
+                    (er, rrr) => {
+                        if (er) {
+                            res.status(200).json({ status: "Не правильно передані данні" })
+                        } else {
+                            res.status(200).json({ status: "Параметри успішно додані" });
+                        }
+                    })
+                }catch(err){}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -42,16 +46,17 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query("UPDATE flat SET country = ?, region = ?, city = ?, street = ?,  houseNumber = ?, apartment = ?, flat_index = ?, distance_metro = ?, distance_stop = ?, distance_shop = ?, distance_green = ?, distance_parking = ? WHERE flat_id = ?",
-                [tok.new.country, tok.new.region, tok.new.city, tok.new.street, tok.new.houseNumber, tok.new.apartment, tok.new.flat_index, tok.new.distance_metro, tok.new.distance_stop, tok.new.distance_shop, tok.new.distance_green, tok.new.distance_parking, fl.flat_id],
-                (err, resuuuu) => {
-                    if (err) {
-                        res.status(200).json({ status: "Не правильно передані данні" })
-                    } else {
-                        res.status(200).json({ status: "Параметри успішно додані" });
-                    }
-                })
-                conee.end()
+                try{
+                    conee.query("UPDATE flat SET country = ?, region = ?, city = ?, street = ?,  houseNumber = ?, apartment = ?, flat_index = ?, distance_metro = ?, distance_stop = ?, distance_shop = ?, distance_green = ?, distance_parking = ? WHERE flat_id = ?",
+                    [tok.new.country, tok.new.region, tok.new.city, tok.new.street, tok.new.houseNumber, tok.new.apartment, tok.new.flat_index, tok.new.distance_metro, tok.new.distance_stop, tok.new.distance_shop, tok.new.distance_green, tok.new.distance_parking, fl.flat_id],
+                    (err, resuuuu) => {
+                        if (err) {
+                            res.status(200).json({ status: "Не правильно передані данні" })
+                        } else {
+                            res.status(200).json({ status: "Параметри успішно додані" });
+                        }
+                    })
+                }catch(err){}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -67,22 +72,9 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, data = ?, about = ? WHERE flat_id = ?",
-                [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, new Date(), tok.flat.about, fl.flat_id],
-                (er, rrrr) => {
-                    if (er) {
-                        res.status(200).json({ status: "Не правильно передані данні" })
-                    } else {
-                        res.status(200).json({ status: "Параметри успішно додані" });
-                    }
-                })
-                conee.end()
-            }else{
-                const admin = await this.appService.citizen(a.user_id, tok.flat_id);
-                if(admin.acces_flat_features === 1){
-                    const conee = mysql.createConnection(config)
-                    conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, about = ?, data = ? WHERE flat_id = ?",
-                    [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, tok.flat.about, new Date(), admin.flat_id],
+                try{
+                    conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, data = ?, about = ? WHERE flat_id = ?",
+                    [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, new Date(), tok.flat.about, fl.flat_id],
                     (er, rrrr) => {
                         if (er) {
                             res.status(200).json({ status: "Не правильно передані данні" })
@@ -90,7 +82,24 @@ export class FlatinfoService {
                             res.status(200).json({ status: "Параметри успішно додані" });
                         }
                     })
-                    conee.end()
+                }catch(err){}finally{conee.end()}
+
+                
+            }else{
+                const admin = await this.appService.citizen(a.user_id, tok.flat_id);
+                if(admin.acces_flat_features === 1){
+                    const conee = mysql.createConnection(config)
+                    try{
+                        conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, about = ?, data = ? WHERE flat_id = ?",
+                        [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, tok.flat.about, new Date(), admin.flat_id],
+                        (er, rrrr) => {
+                            if (er) {
+                                res.status(200).json({ status: "Не правильно передані данні" })
+                            } else {
+                                res.status(200).json({ status: "Параметри успішно додані" });
+                            }
+                        })
+                    }catch(err){}finally{conee.end()}
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -105,51 +114,41 @@ export class FlatinfoService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
-                const conee = mysql.createConnection(config)
-                conee.query('SELECT * FROM about WHERE flat_id = ?', [fl.flat_id],
-                (_errr, about_results) => {
-                    conee.query('SELECT * FROM parametrs WHERE flat_id = ?', [fl.flat_id],
-                        (_err, param_results) => {
-                            conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [fl.flat_id], (_err, img_results) => {
+                const conect = await conect2.getConnection();
+                try{
+                    let [rows1, fields1] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [fl.flat_id])
+                    let [rows2, fields2] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [fl.flat_id])
+                    let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [fl.flat_id])
+                    if(Array.isArray(rows3)){
+                        if (rows3[0] === undefined) {
+                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема" });
+                        } else {
+                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: rows3 });
+                        }
+                    }else{
+                        res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема" });
+                    }
+                }catch(err){}finally{conect.release();}
 
-                                if(Array.isArray(img_results)){
-                                    if (img_results[0] === undefined) {
-                                        res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: "Картинок нема" });
-                                    } else {
-                                        res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: img_results });
-                                    }
-                                }else{
-                                    res.status(200).json({ status: true, flat: fl, about: about_results[0], param: param_results[0], imgs: "Картинок нема" });
-                                }
-                                conee.end()
-                            })
-                        })
-                })
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
                 if(admin){
-                    const conee = mysql.createConnection(config)
-                    conee.query('SELECT apartment, city, street, country, houseNumber, flat_index, flat_id, flat_name, region FROM flat WHERE flat_id = ?', [admin.flat_id],(rrrrrr, flat_inf)=>{
-                        conee.query('SELECT * FROM about WHERE flat_id = ?', [admin.flat_id],
-                        (_errr, about_results) => {
-                            conee.query('SELECT * FROM parametrs WHERE flat_id = ?', [admin.flat_id],
-                                (_err, param_results) => {
-                                    conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id], (_err, img_results) => {
-                                        
-                                        if(Array.isArray(img_results)){
-                                            if (img_results[0] === undefined) {
-                                                res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: "Картинок нема", acces: admin });
-                                            } else {
-                                                res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: img_results, acces: admin });
-                                            }
-                                        }else{
-                                            res.status(200).json({ status: true, flat: flat_inf[0], about: about_results[0], param: param_results[0], imgs: "Картинок нема", acces: admin });
-                                        }
-                                        conee.end()
-                                    })
-                                })
-                        })
-                    })
+                    const conect = await conect2.getConnection();
+                    try{
+                        let [rows1, fields1] = await conect.execute ('SELECT apartment, city, street, country, houseNumber, flat_index, flat_id, flat_name, region FROM flat WHERE flat_id = ?', [admin.flat_id])
+                        let [rows2, fields2] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [admin.flat_id])
+                        let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id])
+                        let [rows4, fields4] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [admin.flat_id])
+                        if(Array.isArray(rows3)){
+                            if (rows3[0] === undefined) {
+                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin });
+                            } else {
+                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: rows3, acces: admin });
+                            }
+                        }else{
+                            res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin });
+                        }
+                    }catch(err){}finally{conect.release();}
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -166,20 +165,16 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id,  tok.new.flat_id)
             if(fl === false){
                 // data_create Додати в flat
-                const conee = mysql.createConnection(config)
-                conee.query('INSERT INTO flat (owner_id, flat_name, data_create) VALUES (?, ?, ?)', [a.user_id, tok.new.flat_id, new Date()],
-                (err, resuuuu:any) => {
-                    if (err) {
-                        res.status(200).json({ status: "Не правильно передані данні" })
-                    } else {
-                        conee.query('INSERT INTO about (flat_id) VALUES (?)', [resuuuu.insertId]);
-                        conee.query('INSERT INTO parametrs (flat_id) VALUES (?)', [resuuuu.insertId]);
-                        conee.query('INSERT INTO flat_status (flat_id) VALUES (?)', [resuuuu.insertId]);
-
-                        res.status(200).json({ status: "Нова оселя успішно створена" });
-                        conee.end()
-                    }
-                })
+                const conect = await conect2.getConnection();
+                try{
+                    let [rows1, fields1]:[any, any] = await conect.execute ('INSERT INTO flat (owner_id, flat_name, data_create) VALUES (?, ?, ?)', [a.user_id, tok.new.flat_id, new Date()])
+                    await conect.query('INSERT INTO about (flat_id) VALUES (?)', [rows1.insertId]);
+                    await conect.query('INSERT INTO parametrs (flat_id) VALUES (?)', [rows1.insertId]);
+                    await conect.query('INSERT INTO flat_status (flat_id) VALUES (?)', [rows1.insertId]);
+                    res.status(200).json({ status: "Нова оселя успішно створена" });
+                }catch(err){
+                    res.status(200).json({ status: "Не правильно передані данні" })
+                }finally{conect.release()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -192,16 +187,15 @@ export class FlatinfoService {
     async getflat_idsService(tok: any, res: any): Promise<any> {
         let a = await this.appService.authentification(tok)
         if (a) {
-            const conee = mysql.createConnection(config)
-            conee.query('SELECT flat_id, flat_name FROM flat WHERE owner_id = ?', [a.user_id],
-                (_err, flat_ids) => {
-                    conee.query('SELECT flat_id, acces_added, acces_admin, acces_services, acces_comunal, acces_filling, acces_subs, acces_discuss, acces_agreement, acces_citizen, acces_comunal_indexes, acces_agent, acces_flat_features, acces_flat_chats FROM citizen WHERE user_id = ?', [a.user_id],
-                        async (err, citizen_ids) => {
-                            let flat_names = await this.Service.getFlatNames(citizen_ids)
-                            res.status(200).json({ status: true, ids: flat_ids, citizen_ids: flat_names });
-                            conee.end()
-                        })
-                })
+            const conect = await conect2.getConnection();
+            try{
+                let [rows1, fields1]:[any, any] = await conect.execute ('SELECT flat_id, flat_name FROM flat WHERE owner_id = ?', [a.user_id])
+                let [rows2, fields2] = await conect.query('SELECT flat_id, acces_added, acces_admin, acces_services, acces_comunal, acces_filling, acces_subs, acces_discuss, acces_agreement, acces_citizen, acces_comunal_indexes, acces_agent, acces_flat_features, acces_flat_chats FROM citizen WHERE user_id = ?', [a.user_id]);
+                let flat_names = await this.Service.getFlatNames(rows2)
+                res.status(200).json({ status: true, ids: rows1, citizen_ids: flat_names });
+            }catch(err){
+                res.status(200).json({ status: "Не правильно передані данні" })
+            }finally{conect.release()}
         } else {
             res.status(200).json({ status: "Не вірний імейл або пароль" });
         }
@@ -214,25 +208,26 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query('SELECT * FROM flat_img WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
-                    re.forEach((i) => {
-                        unlink("../../code/Static/flat/" + i.img, () => { null })
+                try{
+                    conee.query('SELECT * FROM flat_img WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
+                        re.forEach((i) => {
+                            unlink("../../code/Static/flat/" + i.img, () => { null })
+                        })
                     })
-                })
-                conee.query('SELECT * FROM filling WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
-                    re.forEach((i) => {
-                        unlink("../../code/Static/filling/" + i.img, () => { null })
+                    conee.query('SELECT * FROM filling WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
+                        re.forEach((i) => {
+                            unlink("../../code/Static/filling/" + i.img, () => { null })
+                        })
                     })
-                })
-                conee.query('SELECT * FROM comunal_img WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
-                    re.forEach((i) => {
-                        unlink("../../code/Static/comunal/" + i.img, () => { null })
+                    conee.query('SELECT * FROM comunal_img WHERE flat_id = ?;', [fl.flat_id], (er, re: RowDataPacket[]) => {
+                        re.forEach((i) => {
+                            unlink("../../code/Static/comunal/" + i.img, () => { null })
+                        })
                     })
-                })
-                await this.Service.deleteFlat(fl.flat_id)
-                conee.query('DELETE FROM flat WHERE flat_id = ?', [fl.flat_id])
-                conee.end()
-                res.status(200).json({ status: "Будинок успішно видалено :(" });
+                    await this.Service.deleteFlat(fl.flat_id)
+                    conee.query('DELETE FROM flat WHERE flat_id = ?', [fl.flat_id])
+                    res.status(200).json({ status: "Будинок успішно видалено :(" });
+                }catch(err){}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -244,15 +239,16 @@ export class FlatinfoService {
     async getFlatPublicInfo(tok: any, res: any): Promise<any> {
         const a = await this.appService.authentification(tok.auth);
         if(a){ 
-            const conee = mysql.createConnection(config)  
-            conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [tok.flat_id], (_err, img_results) => {
-                if (img_results[0] === undefined) {
-                    res.status(200).json({ status: true, flat: tok.flat_id, imgs: "Картинок нема"});
-                } else {
-                    res.status(200).json({ status: true, flat: tok.flat_id, imgs: img_results});
-                }
-            })
-            conee.end()
+            const conee = mysql.createConnection(config)
+            try{
+                conee.query('SELECT * FROM flat_img WHERE flat_id = ?', [tok.flat_id], (_err, img_results) => {
+                    if (img_results[0] === undefined) {
+                        res.status(200).json({ status: true, flat: tok.flat_id, imgs: "Картинок нема"});
+                    } else {
+                        res.status(200).json({ status: true, flat: tok.flat_id, imgs: img_results});
+                    }
+                })
+            }catch(err){}finally{conee.end()}  
         }else{
           res.status(200).json({ status: false})
         }
@@ -265,18 +261,20 @@ export class FlatinfoService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
-                    res.status(200).json({ status: results});
-                })
-                conee.end()
+                try{
+                    conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
+                        res.status(200).json({ status: results});
+                    })
+                }catch(err){}finally{conee.end()}  
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
                 if(admin){
                     const conee = mysql.createConnection(config)
-                    conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
-                        res.status(200).json({ status: results});
-                    })
-                    conee.end()
+                    try{
+                        conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
+                            res.status(200).json({ status: results});
+                        })
+                    }catch(err){}finally{conee.end()}  
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -291,37 +289,46 @@ export class FlatinfoService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
-                const conee = mysql.createConnection(config)
-                conee.query('SELECT * FROM filling WHERE flat_id = ? AND filling_id = ?;', [fl.flat_id, tok.filling_id], async(er, re) => {
-                    if(re[0] !== undefined){
-                        conee.query('DELETE FROM filling WHERE flat_id = ? AND filling_id = ?', [re[0].flat_id, re[0].filling_id])
-                        if(re[0].img){
-                            unlink("../../code/Static/filling/" + re[0].img, (e)=>{
+                const conect = await conect2.getConnection();
+                try{
+                    let [rows1, fields1]:[any, any] = await conect.execute('SELECT * FROM filling WHERE flat_id = ? AND filling_id = ?;', [fl.flat_id, tok.filling_id])
+                    if(rows1[0] !== undefined){
+                        await conect.execute('DELETE FROM filling WHERE flat_id = ? AND filling_id = ?', [rows1[0].flat_id, rows1[0].filling_id])
+                        if(rows1[0].img){
+                            unlink("../../code/Static/filling/" + rows1[0].img, (e)=>{
                                 res.status(200).json({ status: "Видалення було успішне" });
                             })
                         }else{
                             res.status(200).json({ status: "Видалення було успішне" }); 
-                        }                        
+                        }
+                    }else{
+                        res.status(200).json({ status: false });
                     }
-                    conee.end()
-                })
+                }catch(err){
+                    res.status(200).json({ status: "Не правильно передані данні" })
+                }finally{conect.release()}
+
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
                 if(admin.acces_filling === 1){
-                    const conee = mysql.createConnection(config)
-                    conee.query('SELECT * FROM filling WHERE flat_id = ? AND filling_id = ?;', [admin.flat_id, tok.filling_id], async(er, re) => {
-                        if(re[0] !== undefined){
-                            conee.query('DELETE FROM filling WHERE flat_id = ? AND filling_id = ?', [re[0].flat_id, re[0].filling_id])
-                            if(re[0].img){
-                                    unlink("../../code/Static/filling/" + re[0].img, (e)=>{
-                                        res.status(200).json({ status: "Видалення було успішне" });
-                                    })
+                    const conect = await conect2.getConnection();
+                    try{
+                        let [rows1, fields1]:[any, any] = await conect.execute('SELECT * FROM filling WHERE flat_id = ? AND filling_id = ?;', [admin.flat_id, tok.filling_id])
+                        if(rows1[0] !== undefined){
+                            await conect.execute('DELETE FROM filling WHERE flat_id = ? AND filling_id = ?', [rows1[0].flat_id, rows1[0].filling_id])
+                            if(rows1[0].img){
+                                unlink("../../code/Static/filling/" + rows1[0].img, (e)=>{
+                                    res.status(200).json({ status: "Видалення було успішне" });
+                                })
                             }else{
                                 res.status(200).json({ status: "Видалення було успішне" }); 
-                            }               
+                            }
+                        }else{
+                            res.status(200).json({ status: false });
                         }
-                        conee.end()
-                    })
+                    }catch(err){
+                        res.status(200).json({ status: "Не правильно передані данні" })
+                    }finally{conect.release()}         
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -376,37 +383,45 @@ export class FlatinfoService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id);
             if(fl){
-                const conee = mysql.createConnection(config)
-                conee.query('SELECT * FROM flat_img WHERE flat_id = ? AND img = ?;', [fl.flat_id, tok.img], async(er, re) => {
-                    if(re[0] !== undefined){
-                        conee.query('DELETE FROM flat_img WHERE flat_id = ? AND img = ?', [re[0].flat_id, re[0].img])
-                        if(re[0].img){
-                            unlink("../../code/Static/flat/" + re[0].img, (e)=>{
+                const conect = await conect2.getConnection();
+                try{
+                    let [rows1, fields1]:[any, any] = await conect.execute('SELECT * FROM flat_img WHERE flat_id = ? AND img = ?;', [fl.flat_id, tok.img])
+                    if(rows1[0] !== undefined){
+                        await conect.execute('DELETE FROM flat_img WHERE flat_id = ? AND img = ?', [rows1[0].flat_id, rows1[0].img])
+                        if(rows1[0].img){
+                            unlink("../../code/Static/flat/" + rows1[0].img, (e)=>{
                                 res.status(200).json({ status: "Видалення було успішне" });
                             })
                         }else{
                             res.status(200).json({ status: "Видалення було успішне" }); 
-                        }                        
+                        }
+                    }else{
+                        res.status(200).json({ status: false });
                     }
-                    conee.end()
-                })
+                }catch(err){
+                    res.status(200).json({ status: "Не правильно передані данні" })
+                }finally{conect.release()}             
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
                 if(admin.acces_flat_features === 1){
-                    const conee = mysql.createConnection(config)
-                    conee.query('SELECT * FROM flat_img WHERE flat_id = ? AND img = ?;', [admin.flat_id, tok.img], async(er, re) => {
-                        if(re[0] !== undefined){
-                            conee.query('DELETE FROM flat_img WHERE flat_id = ? AND img = ?', [re[0].flat_id, re[0].img])
-                            if(re[0].img){
-                                unlink("../../code/Static/flat/" + re[0].img, (e)=>{
+                    const conect = await conect2.getConnection();
+                    try{
+                        let [rows1, fields1]:[any, any] = await conect.execute('SELECT * FROM flat_img WHERE flat_id = ? AND img = ?;', [admin.flat_id, tok.img])
+                        if(rows1[0] !== undefined){
+                            await conect.execute('DELETE FROM flat_img WHERE flat_id = ? AND img = ?', [rows1[0].flat_id, rows1[0].img])
+                            if(rows1[0].img){
+                                unlink("../../code/Static/flat/" + rows1[0].img, (e)=>{
                                     res.status(200).json({ status: "Видалення було успішне" });
                                 })
                             }else{
                                 res.status(200).json({ status: "Видалення було успішне" }); 
-                            }                        
+                            }
+                        }else{
+                            res.status(200).json({ status: false });
                         }
-                        conee.end()
-                    })
+                    }catch(err){
+                        res.status(200).json({ status: "Не правильно передані данні" })
+                    }finally{conect.release()} 
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }                

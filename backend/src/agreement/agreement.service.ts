@@ -8,9 +8,7 @@ import { Service } from './service';
 @Injectable()
 export class AgreementService {
     constructor(private readonly appService: AppService, private readonly Service: Service) {}
-
-
-
+    
     async addAgreement(tok: object | any, res: any){
         let a = await this.appService.authentification(tok.auth)
         
@@ -67,16 +65,17 @@ export class AgreementService {
             let agree = await this.Service.getAgreement(tok.agreement_id, tok.flat_id, a.user_id)
             if(agree){
                 const conee = mysql.createConnection(config)
-                conee.query(
-                    "UPDATE agreement SET i_agree = ? WHERE agreement_id = ?",[tok.i_agree, agree.agreement_id],(err,result)=>{
-                        if(err){
-                            res.status(200).json({ status: false });
-                        }else{
-                            res.status(200).json({ status: "Договір погоджено" }); 
-                        }                                                                             
-                    }
-                )
-                conee.end()
+                try{
+                    conee.query(
+                        "UPDATE agreement SET i_agree = ? WHERE agreement_id = ?",[tok.i_agree, agree.agreement_id],(err,result)=>{
+                            if(err){
+                                res.status(200).json({ status: false });
+                            }else{
+                                res.status(200).json({ status: "Договір погоджено" }); 
+                            }                                                                             
+                        }
+                    )
+                }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Немає угоди" });
             }
@@ -93,14 +92,15 @@ export class AgreementService {
                 let agree = await this.Service.getAgreement(tok.agreement_id, fl.flat_id, tok.user_id)
                 if (agree){
                     const conee = mysql.createConnection(config)
-                    conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
-                    conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
-                    conee.query(
-                        'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
-                            res.status(200).json({ status: true });
-                        }
-                    )
-                    conee.end()
+                    try{
+                        conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
+                        conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                        conee.query(
+                            'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
+                                res.status(200).json({ status: true });
+                            }
+                        )
+                    }catch(err){res.status(200).json({ status: false });}finally{conee.end()} 
                 }else{
                     res.status(200).json({ status: false });
                 }
@@ -110,13 +110,14 @@ export class AgreementService {
                     let agree = await this.Service.getAgreement(tok.agreement_id, admin.flat_id, tok.user_id)
                     if (agree){
                         const conee = mysql.createConnection(config)
-                        conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
-                        conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
-                        conee.query(
-                            'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
-                                res.status(200).json({ status: true });
+                        try{
+                            conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
+                            conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                            conee.query(
+                                'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
+                                    res.status(200).json({ status: true });
                             })
-                        conee.end()
+                        }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
                     }else{
                         res.status(200).json({ status: false });
                     }
@@ -135,11 +136,16 @@ export class AgreementService {
             let agree = await this.Service.getAgreement(tok.agreement_id, tok.flat_id, a.user_id)
             if(agree){
                 const conee = mysql.createConnection(config)
-                conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
-                conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
-                conee.query('DELETE FROM agreement WHERE agreement_id = ?;', [agree.agreement_id])
-                conee.end()
-                res.status(200).json({ status: true });
+                try{
+                    conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
+                    conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                    conee.query('DELETE FROM agreement WHERE agreement_id = ?;', [agree.agreement_id])
+                    
+                    res.status(200).json({ status: true });
+                }catch(err){
+                    res.status(200).json([{ status: false }]);
+                }finally{conee.end()}
+
             }else{
                 res.status(200).json([{ status: false }]);
             }
@@ -318,10 +324,15 @@ export class AgreementService {
                 let agree = await this.Service.getAgreement(tok.agreement_id, fl.flat_id, tok.user_id)
                 if (agree){
                     const conee = mysql.createConnection(config)
-                    conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
-                    conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
-                    conee.end()
-                    res.status(200).json({ status: "Видалено" });
+                    try{
+                        conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
+                        conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                        
+                        res.status(200).json({ status: "Видалено" });
+                    }catch(err){
+                        res.status(200).json({ status: false });
+                    }finally{conee.end()}
+
                 }else{
                     res.status(200).json({ status: "Данні введено не правильно" });
                 }
@@ -331,10 +342,13 @@ export class AgreementService {
                     let agree = await this.Service.getAgreement(tok.agreement_id, admin.flat_id, tok.user_id)
                     if (agree){
                         const conee = mysql.createConnection(config)
-                        conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
-                        conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
-                        conee.end()
-                        res.status(200).json({ status: "Видалено" });
+                        try{
+                            conee.query('DELETE FROM agreement_act WHERE agreement_id = ?;', [agree.agreement_id])
+                            conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
+                            
+                            res.status(200).json({ status: "Видалено" });
+                        }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+
                     }else{
                         res.status(200).json({ status: "Данні введено не правильно" });
                     }

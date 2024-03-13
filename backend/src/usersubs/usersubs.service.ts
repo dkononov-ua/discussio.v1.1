@@ -6,6 +6,7 @@ import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 import { Service } from './service';
 
+
 @Injectable()
 export class UsersubsService {
     constructor(private readonly appService: AppService, private readonly Service: Service) { }
@@ -22,14 +23,20 @@ export class UsersubsService {
                         let subs = await this.Service.user_subscribes(tok.user_id, tok.flat_id)
                         if(subs === false){
                             const conee = mysql.createConnection(config)
-                            conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
-                            conee.end()
-                            res.status(200).json({ status: "Ви успішно підписались" });
+                            try{
+                                conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
+                                res.status(200).json({ status: "Ви успішно підписались" });    
+                            }catch(err){
+                                res.status(200).json({ status: false });
+                            }finally{conee.end()}
                         }else{
                             const conee = mysql.createConnection(config)
-                            conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
-                            conee.end()
-                            res.status(200).json({ status: "Ви успішно відписались" });
+                            try{
+                                conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
+                                res.status(200).json({ status: "Ви успішно відписались" });
+                            }catch(err){
+                                res.status(200).json({ status: false });
+                            }finally{conee.end()}
                         }
                     }else{
                         res.status(200).json({ status: "Ви в дискусії" });
@@ -47,14 +54,20 @@ export class UsersubsService {
                             let subs = await this.Service.user_subscribes(tok.user_id, tok.flat_id)
                             if(subs === false){
                                 const conee = mysql.createConnection(config)
-                                conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
-                                conee.end()
-                                res.status(200).json({ status: "Ви успішно підписались" });
+                                try{
+                                    conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
+                                    res.status(200).json({ status: "Ви успішно підписались" });
+                                }catch(err){
+                                    res.status(200).json({ status: false });
+                                }finally{conee.end()}
                             }else{
                                 const conee = mysql.createConnection(config)
-                                conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
-                                conee.end()
-                                res.status(200).json({ status: "Ви успішно відписались" });
+                                try{
+                                    conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
+                                    res.status(200).json({ status: "Ви успішно відписались" });
+                                }catch(err){
+                                    res.status(200).json({ status: false });
+                                }finally{conee.end()}
                             }
                         }else{
                             res.status(200).json({ status: "Ви в дискусії" });
@@ -134,10 +147,14 @@ export class UsersubsService {
                 let acc_subs = await this.appService.accept_subs(a.user_id, tok.flat_id)
                 if(acc_subs === false){
                     const conee = mysql.createConnection(config)
-                    conee.query('INSERT INTO accept_subs (user_id, flat_id) VALUES (?, ?)', [subs.user_id, subs.flat_id])
-                    conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [subs.flat_id, subs.user_id])
-                    conee.end()
-                    res.status(200).json({ status: true });
+                    try{
+                        conee.query('INSERT INTO accept_subs (user_id, flat_id) VALUES (?, ?)', [subs.user_id, subs.flat_id])
+                        conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [subs.flat_id, subs.user_id])
+                        res.status(200).json({ status: true });
+                    }catch(err){
+                        res.status(200).json({ status: false });
+                    }finally{conee.end()}
+
                 }else{
                     res.status(200).json({ status: "Ви вже в дискусії" });
                 }
@@ -157,16 +174,22 @@ export class UsersubsService {
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
                 const conee = mysql.createConnection(config)
-                conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, tok.user_id])
-                conee.end()
-                res.status(200).json({ status: true });
+                try{
+                    conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, tok.user_id])
+                    res.status(200).json({ status: true });
+                }catch(err){
+                    res.status(200).json({ status: false });
+                }finally{conee.end()}
             }else{
                 let admin = await this.appService.citizen(a.user_id, tok.flat_id)
                 if(admin.acces_subs === 1){
                     const conee = mysql.createConnection(config)
-                    conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, tok.user_id])
-                    conee.end()
-                    res.status(200).json({ status: true });
+                    try{
+                        conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, tok.user_id])
+                        res.status(200).json({ status: true });
+                    }catch(err){
+                        res.status(200).json({ status: false });
+                    }finally{conee.end()}
                 }else{
                     res.status(200).json({ status: false });
                 }   
@@ -180,9 +203,12 @@ export class UsersubsService {
         let a = await this.appService.authentification(tok.auth)
         if (a) {
             const conee = mysql.createConnection(config)
-            conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
-            conee.end()
-            res.status(200).json({ status: true });
+            try{
+                conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
+                res.status(200).json({ status: true });
+            }catch(err){
+                res.status(200).json({ status: false });
+            }finally{conee.end()}
         } else {
             res.status(200).json({ status: false });
         }

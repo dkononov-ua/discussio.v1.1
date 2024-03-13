@@ -21,10 +21,12 @@ export class AcceptSubsService {
                     let par = await this.appService.getUserParams(tok.user_id)
                     if(par.add_in_flat == 1){
                         const conee = mysql.createConnection(config)
-                        conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id],(err, resul)=>{console.log(err)})
-                        conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id],(err, resul)=>{1})
-                        conee.end()
-                        res.status(200).json({ status: true });
+                        try{
+                            conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id],(err, resul)=>{console.log(err)})
+                            conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id],(err, resul)=>{1})
+                            res.status(200).json({ status: true });
+                        }catch(err){res.status(200).json({ status: "Користувач заборонив себе додавати" });}finally{conee.end()}
+
                     }else{
                         res.status(200).json({ status: "Користувач заборонив себе додавати" });
                     }
@@ -49,9 +51,12 @@ export class AcceptSubsService {
             if(fl || (await this.appService.citizen(a.user_id, tok.flat_id)).acces_discuss === 1){
                 if(await this.appService.accept_subs(tok.user_id, tok.flat_id)){
                     const conee = mysql.createConnection(config)
-                    conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, accept_subs.user_id])
-                    conee.end()
-                    res.status(200).json({ status: true });
+                    try{
+                        conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, accept_subs.user_id])
+                    
+                        res.status(200).json({ status: true });
+                    }catch(err){res.status(200).json({ status: "Дискусії немає" });}finally{conee.end()}
+
                 }else{
                     res.status(200).json({ status: "Дискусії немає" });
                 }
@@ -67,9 +72,11 @@ export class AcceptSubsService {
         let a = await this.appService.authentification(tok.auth)
         if(a){
             const conee = mysql.createConnection(config)
-            conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
-            conee.end()
-            res.status(200).json({ status: true });
+            try{
+                conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
+                res.status(200).json({ status: true });
+            }catch(err){res.status(200).json({ status:  "Авторизуйтесь" });}finally{conee.end()}
+
         }else{
             res.status(200).json({ status:  "Авторизуйтесь" });
         }

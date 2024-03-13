@@ -5,58 +5,65 @@ import * as mysql from 'mysql2';
 import config from 'src/dbpar';
 import sendMail from 'src/email';
 import { Service } from '../service';
-
+import conect2 from 'src/db_promise';
 
 
 @Injectable()
 export class RegistrationService {
   constructor(private readonly appService: AppService, private readonly Service: Service) { }
 
-    async getRegister(inf: any, res: any): Promise<any> {
-      if(inf.regEmail.indexOf("@discussio.beta") != -1){
-        const conee = mysql.createConnection(config)
-        conee.query("SELECT COUNT(*) AS total FROM users",(er, re)=>{
-          if(re[0].total <= 100){
-            try{
-              const startDate :any = new Date(inf.dob);
-            const endDate :any  = new Date()
-            const timeDifference = endDate - startDate;
-            const millisecondsInYear = 365.25 * 24 * 60 * 60 * 1000;
-            const yearsDifference = timeDifference / millisecondsInYear;
-            if(inf.regEmail !== undefined && inf.regEmail !== null && inf.regPassword !== undefined && inf.regPassword !== null && yearsDifference >= 16){
-              conee.query(
-                'INSERT INTO users (firstName, user_mail, password, dob) VALUES (?, ?, ?, ?)',
-                // eslint-disable-next-line prettier/prettier
-                [inf.userName, inf.regEmail, inf.regPassword, startDate],
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                (err, result:any) => {
-                  // Додати до дениса
-                if (err) {  
-                  res.status(200).json({ status: "Не правильно передані данні" })
-                }else{
-                    conee.query('INSERT INTO contacts (user_id) VALUES (?)', [result.insertId])
-                    conee.query('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [result.insertId, "user_default.svg"])
-                    conee.query('INSERT INTO features (user_id) VALUES (?)', [result.insertId])
-                    conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
-                    conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
-                  res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword, userName: inf.userName});
-                }
-                conee.end()  
-                },
-              );}else{
-                res.status(200).json({ status: "Не правильно передані данні"});
-            }
-            }catch(err){
-              res.status(200).json({ status: "Не правильно передані данні"});
-            }
-          }else{
-            res.status(200).json({ status: "Перевищенноо ліміт користувачів на платформі"});
-          }
-        })
-      }else{
-        res.status(200).json({ status: "Не правильний ключ-пошта"});
-      }
-    }
+    // async getRegister(inf: any, res: any): Promise<any> {
+    //   if(inf.regEmail.indexOf("@discussio.beta") != -1){
+    //     const conee = mysql.createConnection(config)
+
+
+
+
+
+
+    //     try{}catch(err){}finally{}
+    //     conee.query("SELECT COUNT(*) AS total FROM users",(er, re)=>{
+    //       if(re[0].total <= 100){
+    //         try{
+    //           const startDate :any = new Date(inf.dob);
+    //           const endDate :any  = new Date()
+    //           const timeDifference = endDate - startDate;
+    //           const millisecondsInYear = 365.25 * 24 * 60 * 60 * 1000;
+    //           const yearsDifference = timeDifference / millisecondsInYear;
+    //         if(inf.regEmail !== undefined && inf.regEmail !== null && inf.regPassword !== undefined && inf.regPassword !== null && yearsDifference >= 16){
+    //           conee.query(
+    //             'INSERT INTO users (firstName, user_mail, password, dob) VALUES (?, ?, ?, ?)',
+    //             // eslint-disable-next-line prettier/prettier
+    //             [inf.userName, inf.regEmail, inf.regPassword, startDate],
+    //             // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    //             (err, result:any) => {
+    //               // Додати до дениса
+    //             if (err) {  
+    //               res.status(200).json({ status: "Не правильно передані данні" })
+    //             }else{
+    //                 conee.query('INSERT INTO contacts (user_id) VALUES (?)', [result.insertId])
+    //                 conee.query('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [result.insertId, "user_default.svg"])
+    //                 conee.query('INSERT INTO features (user_id) VALUES (?)', [result.insertId])
+    //                 conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
+    //                 conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
+    //               res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword, userName: inf.userName});
+    //             }
+    //             conee.end()  
+    //             },
+    //           );}else{
+    //             res.status(200).json({ status: "Не правильно передані данні"});
+    //         }
+    //         }catch(err){
+    //           res.status(200).json({ status: "Не правильно передані данні"});
+    //         }
+    //       }else{
+    //         res.status(200).json({ status: "Перевищенноо ліміт користувачів на платформі"});
+    //       }
+    //     })
+    //   }else{
+    //     res.status(200).json({ status: "Не правильний ключ-пошта"});
+    //   }
+    // }
 
 
 
@@ -93,28 +100,19 @@ export class RegistrationService {
         if(secure){
           let check = await this.Service.secure_check(inf.regEmail, inf.passCode)
           if(check.attempt_counter < 5){
-            const conee = mysql.createConnection(config)
-            conee.query(
-              'INSERT INTO users (user_mail, password, dob, data_create) VALUES (?, ?, ?, ?)',
-              // eslint-disable-next-line prettier/prettier
-              [check.email, check.password, new Date(check.dob), new Date()],
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              async (err, result:any) => {
-                // Додати до дениса
-              if (err) {  
-                res.status(200).json({ status: "Не правильно передані данні" })
-              }else{
+            const conect = await conect2.getConnection();
+            try{
+                let [rows1, fields1] : [any, any] = await conect.execute ('INSERT INTO users (user_mail, password, dob, data_create) VALUES (?, ?, ?, ?)', [check.email, check.password, new Date(check.dob), new Date()])
                 await this.Service.delete_secure(check.email)
-                conee.query('INSERT INTO contacts (user_id) VALUES (?)', [result.insertId])
-                conee.query('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [result.insertId, "user_default.svg"])
-                conee.query('INSERT INTO features (user_id) VALUES (?)', [result.insertId])
-                conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
-                conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
+                await conect.execute('INSERT INTO contacts (user_id) VALUES (?)', [rows1.insertId])
+                await conect.execute('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [rows1.insertId, "user_default.svg"])
+                await conect.execute('INSERT INTO features (user_id) VALUES (?)', [rows1.insertId])
+                await conect.execute('INSERT INTO user_parametrs (user_id) VALUES (?)', [rows1.insertId])
+                await conect.execute('INSERT INTO user_status (user_id) VALUES (?)', [rows1.insertId])
                 res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword});
-              }
-              conee.end()  
-              },
-            );
+            }catch(err){
+              res.status(200).json({ status: "Не правильно передані данні" })
+            }finally{conect.release();}
           }else{
             await this.Service.updete_secure(check) 
             res.status(200).json({ status: "Не правильний код"});
@@ -156,17 +154,18 @@ export class RegistrationService {
           let check = await this.Service.secure_check(inf.email, inf.passCode)
           if(check.attempt_counter < 5){
             const conee = mysql.createConnection(config)
-            conee.query(
-              'UPDATE users SET password = ? WHERE user_mail = ?;',
-              // eslint-disable-next-line prettier/prettier
-              [inf.password, check.email],
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              async (err, result:any) => {
-                // Додати до дениса
-                res.status(200).json({ status: true, email: check.email, password: inf.password});
-              },
-            );
-            conee.end()
+            try{
+              conee.query(
+                'UPDATE users SET password = ? WHERE user_mail = ?;',
+                // eslint-disable-next-line prettier/prettier
+                [inf.password, check.email],
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                async (err, result:any) => {
+                  // Додати до дениса
+                  res.status(200).json({ status: true, email: check.email, password: inf.password});
+                },
+              );
+            }catch(err){res.status(200).json({ status: "Не правильний код"});}finally{conee.end()} 
           }else{
             await this.Service.updete_secure(check) 
             res.status(200).json({ status: "Не правильний код"});

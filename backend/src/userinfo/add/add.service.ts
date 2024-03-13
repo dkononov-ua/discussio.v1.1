@@ -6,7 +6,6 @@ import config from 'src/dbpar';
 import { AppService } from 'src/app.service';
 
 
-
 @Injectable()
 export class AddService {
     constructor(private readonly appService: AppService) {}
@@ -15,7 +14,8 @@ export class AddService {
         let a = await this.appService.authentification(tok.auth)
         if(a){
             const conee = mysql.createConnection(config)
-            conee.query("UPDATE users SET firstName = ?, lastName = ?, surName = ?, password = ? WHERE user_id = ?",
+            try{
+                conee.query("UPDATE users SET firstName = ?, lastName = ?, surName = ?, password = ? WHERE user_id = ?",
                 [tok.new.firstName, tok.new.lastName, tok.new.surName, tok.auth.password, a.user_id],
                 (err, resuuuu)=>{
                     if (err) {  
@@ -24,7 +24,9 @@ export class AddService {
                         res.status(200).json({ status: true, inf:a });                            
                     }
                 })
-            conee.end()
+            }catch(err){
+                res.status(200).json({ status: false });
+            }finally{conee.end()}  
         }else{
             res.status(200).json({ status: false });
         }
@@ -35,7 +37,8 @@ export class AddService {
         let a = await this.appService.authentification(tok.auth)
         if(a){
             const conee = mysql.createConnection(config)
-            conee.query("UPDATE contacts SET instagram = ?, telegram = ?, viber = ?, facebook = ?, tell = ?, phone_alt = ?, mail = ? WHERE user_id = ?",
+            try{
+                conee.query("UPDATE contacts SET instagram = ?, telegram = ?, viber = ?, facebook = ?, tell = ?, phone_alt = ?, mail = ? WHERE user_id = ?",
                 [tok.new.instagram, tok.new.telegram, tok.new.viber, tok.new.facebook, tok.new.tell, tok.new.phone_alt, tok.new.mail, a.user_id],
                 (err, resuuuu)=>{
                     if (err) {  
@@ -44,7 +47,9 @@ export class AddService {
                         res.status(200).json({ status: true});                            
                     }
                 })
-            conee.end()
+            }catch(err){
+                res.status(200).json({ status: false});
+            }finally{conee.end()}
         }else{
             res.status(200).json({ status: false });
         }
@@ -54,7 +59,8 @@ export class AddService {
         let a = await this.appService.authentification(tok.auth)
         if(a){
             const conee = mysql.createConnection(config)
-            conee.query("UPDATE user_parametrs SET add_in_flat = ? WHERE user_id = ?",
+            try{
+                conee.query("UPDATE user_parametrs SET add_in_flat = ? WHERE user_id = ?",
                 [tok.add_in_flat, a.user_id],
                 (err, resuuuu)=>{
                     if (err) {  
@@ -63,7 +69,11 @@ export class AddService {
                         res.status(200).json({ status: true});                            
                     }
                 })
-            conee.end()
+            }catch(err){
+                res.status(200).json({ status: false});
+            }finally{
+                conee.end()
+            }
         }else{
             res.status(200).json({ status: false });
         }
