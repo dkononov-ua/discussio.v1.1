@@ -122,10 +122,10 @@ export class ImgService {
                     conee.query('SELECT * FROM user_img WHERE user_id = ?;', [a.user_id], (er, re:any) => {
                         const conee = mysql.createConnection(config)
                         try{if (re[0].img != "user_default.svg") {
-                            conee.query('DELETE FROM user_img WHERE img = ?', [re[0].img])
+                            conee.query('DELETE FROM user_img WHERE user_id = ?', [a.user_id])
                             unlink("../../code/Static/users/" + re[0].img, (e) => { console.log(e) })
                         }else if(re[0].img == "user_default.svg"){
-                            conee.query('DELETE FROM user_img WHERE img = ?', [re[0].img])
+                            conee.query('DELETE FROM user_img WHERE user_id = ?', [a.user_id])
                         }}catch(err){}finally{conee.end()}
     
                         try{
