@@ -26,12 +26,15 @@ export class ImgService {
                 const conee = mysql.createConnection(config)
                 try{
                     conee.query("INSERT INTO flat_img (flat_id, img) VALUES (?, ?)", [inf.flat_id, files.filename + randomNumber + type_file], (err, resuuuu) => {
+                        
                         if (err) {
                             unlink("../../code/Static/" + files.filename, () => {
                                 res.status(200).json({ status: "Помилка збереження" });
                             })
                         } else {
+                            const conee = mysql.createConnection(config)
                             conee.query('SELECT * FROM flat_img WHERE flat_id = ?;', [inf.flat_id], (er, re: RowDataPacket[]) => {
+                                conee.end()
                                 if (re.length >= 20) {
                                     conee.query('DELETE FROM flat_img WHERE img = ?', [re[0].img])
                                     unlink("../../code/Static/flat/" + re[0].img, () => { })
@@ -148,8 +151,10 @@ export class ImgService {
                                             sharp(inputFile).resize(width, height)
                                                 .toFile(outputFile)
                                                 .then(() => {
+                                                    const conee = mysql.createConnection(config)
                                                     conee.query("INSERT INTO user_img (user_id, img) VALUES (?, ?)", [a.user_id, files.filename + randomNumber + type_file],
                                                         (errrr) => {
+                                                            conee.end()
                                                             if (errrr) {
                                                                 unlink(inputFile, () => { })
                                                                 unlink(outputFile, () => { })
