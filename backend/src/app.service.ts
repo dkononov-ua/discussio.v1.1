@@ -316,6 +316,22 @@ export class AppService {
     
   }
 
+
+  async login(tok: any) {
+    const conect = await conect2.getConnection();
+    try{
+      let [rows, fields] = await conect.execute('SELECT * FROM users JOIN user_status ON users.user_id = user_status.user_id WHERE users.user_mail = ? AND users.password = ?;', [tok.email, tok.password])
+      if (rows[0] !== undefined) {
+        return rows[0]
+      } else {
+        return undefined
+      }
+    }catch(err){
+      return false
+    }finally{conect.release();}
+    
+  }
+
   async citizen(user_id: string, flat_id: string) {
     const conect = await conect2.getConnection();
     try{
