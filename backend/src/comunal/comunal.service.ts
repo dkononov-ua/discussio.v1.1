@@ -234,11 +234,11 @@ export class ComunalService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
-                await this.Service.deleteComunal(fl.flat_id, tok.comunal_name)
+                res.status(200).json( {status:await this.Service.deleteComunal(fl.flat_id, tok.comunal_name)})
             }else{
                 let admin = await this.appService.citizen(a.user_id, tok.flat_id)
                 if(admin.acces_comunal === 1){
-                    await this.Service.deleteComunal(admin.flat_id, tok.comunal_name)
+                    res.status(200).json( {status:await this.Service.deleteComunal(admin.flat_id, tok.comunal_name)})
                 }else{
                     res.status(200).json({ status: false });
                 }
