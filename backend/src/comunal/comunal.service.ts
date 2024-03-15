@@ -255,17 +255,11 @@ export class ComunalService {
         if(a){
             let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
             if(fl){
-                const conee = mysql.createConnection(config)
-                try{
-                    conee.query('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [fl.flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
-                }catch(err){}finally{conee.end()}
+                res.status(200).json({ status: await this.Service.deleteComunalOne(fl.flat_id, tok) });
             }else{
                 let admin = await this.appService.citizen(a.user_id, tok.flat_id)
                 if(admin.acces_comunal === 1){
-                    const conee = mysql.createConnection(config)
-                    try{
-                        conee.query('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [admin.flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
-                    }catch(err){}finally{conee.end()}  
+                    res.status(200).json({ status: await this.Service.deleteComunalOne(admin.flat_id, tok) });
                 }else{
                     res.status(200).json({ status: false });
                 }

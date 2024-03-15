@@ -154,11 +154,28 @@ export class Service {
       await conect.execute('DELETE FROM comunal_img WHERE flat_id = ? AND comunal_name = ?;', [flat_id, comunal_name])
       await conect.execute('DELETE FROM comunal WHERE flat_id = ? AND comunal_name = ?;', [flat_id, comunal_name])
       await conect.execute('DELETE FROM comunal_name WHERE flat_id = ? AND comunal_name = ?;', [flat_id, comunal_name])
+      return true
     }catch{
       return false
     }finally{conect.release();}
-    
-  return true
   }
+
+
+
+  async deleteComunalOne(flat_id: any, tok: any) {
+    const conect = await conect2.getConnection();
+    try{
+      let [rows, fields2]:[any, any] = await conect.execute('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
+      await Promise.all(rows.map(async(i:any) => {
+        unlink("../../code/Static/comunal/" + i.img, () => { null })
+      }))
+      await conect.execute('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
+      await conect.execute('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
+      return true
+    }catch{
+      return false
+    }finally{conect.release();}
+  }
+
 
 }

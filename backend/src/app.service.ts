@@ -311,6 +311,7 @@ export class AppService {
         return undefined
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -327,6 +328,7 @@ export class AppService {
         return undefined
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
