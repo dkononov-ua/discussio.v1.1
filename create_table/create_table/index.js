@@ -179,10 +179,12 @@ con.query("CREATE TABLE IF NOT EXISTS flat ( \
     country VARCHAR(70) CHECK (LENGTH(country) <= 70), \
     region VARCHAR(70) CHECK (LENGTH(region) <= 70), \
     city VARCHAR(70) CHECK (LENGTH(city) <= 70), \
+    district VARCHAR(70) CHECK (LENGTH(district) <= 70), \
+    micro_district VARCHAR(70) CHECK (LENGTH(micro_district) <= 70), \
     street VARCHAR(70) CHECK (LENGTH(street) <= 70), \
     houseNumber VARCHAR(10) CHECK (LENGTH(houseNumber) <= 10), \
     apartment VARCHAR(10) CHECK (LENGTH(apartment) <= 10), \
-    flat_index VARCHAR(10) CHECK (LENGTH(flat_index) <= 10), \
+    flat_index VARCHAR(20) CHECK (LENGTH(flat_index) <= 20), \
     distance_metro MEDIUMINT CHECK (REGEXP_LIKE(distance_metro, '^[0-9]+$') AND distance_metro BETWEEN -1000000 AND 1000000), \
     distance_stop MEDIUMINT CHECK (REGEXP_LIKE(distance_stop, '^[0-9]+$') AND distance_stop BETWEEN -1000000 AND 1000000), \
     distance_shop MEDIUMINT CHECK (REGEXP_LIKE(distance_shop, '^[0-9]+$') AND distance_shop BETWEEN -1000000 AND 1000000), \
