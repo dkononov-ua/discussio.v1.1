@@ -25,10 +25,8 @@ export class Service {
     const conect = await conect2.getConnection();
     try{
       let [rows2, fields2] = await conect.execute('SELECT * FROM use_security WHERE email = ? AND em_pass = ? LIMIT 1;', [email, code])
-      let [rows, fields] = await conect.execute('SELECT * FROM use_security WHERE email = ? LIMIT 1;', [email])
-      
       if (rows2[0] !== undefined) {
-        return rows[0]
+        return rows2[0]
       } else {
         return false
       }

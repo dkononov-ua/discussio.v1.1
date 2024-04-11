@@ -6,65 +6,12 @@ import config from 'src/dbpar';
 import sendMail from 'src/email';
 import { Service } from '../service';
 import conect2 from 'src/db_promise';
+import * as crypto from "crypto"
 
 
 @Injectable()
 export class RegistrationService {
   constructor(private readonly appService: AppService, private readonly Service: Service) { }
-
-    // async getRegister(inf: any, res: any): Promise<any> {
-    //   if(inf.regEmail.indexOf("@discussio.beta") != -1){
-    //     const conee = mysql.createConnection(config)
-
-
-
-
-
-
-    //     try{}catch(err){}finally{}
-    //     conee.query("SELECT COUNT(*) AS total FROM users",(er, re)=>{
-    //       if(re[0].total <= 100){
-    //         try{
-    //           const startDate :any = new Date(inf.dob);
-    //           const endDate :any  = new Date()
-    //           const timeDifference = endDate - startDate;
-    //           const millisecondsInYear = 365.25 * 24 * 60 * 60 * 1000;
-    //           const yearsDifference = timeDifference / millisecondsInYear;
-    //         if(inf.regEmail !== undefined && inf.regEmail !== null && inf.regPassword !== undefined && inf.regPassword !== null && yearsDifference >= 16){
-    //           conee.query(
-    //             'INSERT INTO users (firstName, user_mail, password, dob) VALUES (?, ?, ?, ?)',
-    //             // eslint-disable-next-line prettier/prettier
-    //             [inf.userName, inf.regEmail, inf.regPassword, startDate],
-    //             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //             (err, result:any) => {
-    //               // Додати до дениса
-    //             if (err) {  
-    //               res.status(200).json({ status: "Не правильно передані данні" })
-    //             }else{
-    //                 conee.query('INSERT INTO contacts (user_id) VALUES (?)', [result.insertId])
-    //                 conee.query('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [result.insertId, "user_default.svg"])
-    //                 conee.query('INSERT INTO features (user_id) VALUES (?)', [result.insertId])
-    //                 conee.query('INSERT INTO user_parametrs (user_id) VALUES (?)', [result.insertId])
-    //                 conee.query('INSERT INTO user_status (user_id) VALUES (?)', [result.insertId])
-    //               res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword, userName: inf.userName});
-    //             }
-    //             conee.end()  
-    //             },
-    //           );}else{
-    //             res.status(200).json({ status: "Не правильно передані данні"});
-    //         }
-    //         }catch(err){
-    //           res.status(200).json({ status: "Не правильно передані данні"});
-    //         }
-    //       }else{
-    //         res.status(200).json({ status: "Перевищенноо ліміт користувачів на платформі"});
-    //       }
-    //     })
-    //   }else{
-    //     res.status(200).json({ status: "Не правильний ключ-пошта"});
-    //   }
-    // }
-
 
 
     async firstRegistration(inf: any, res: any): Promise<any> {
@@ -77,7 +24,11 @@ export class RegistrationService {
         let a = await this.Service.registercheck(inf.regEmail)
         if(a){
           res.status(200).json({ status: "Ви вже зареєстровані"});
-        }else{  
+        }else{
+          const password = inf.regPassword;
+          const salt = '-vse23Discuss53213yt';
+          const hash = crypto.createHash('sha256').update(password + salt).digest('hex');
+          inf.regPassword = hash.slice(0, 30);  
           let numb = await this.Service.new_secure(inf)
           const html = `<p style="width: 400px; margin: 5px; color: gray; text-align: center; font-size: 16px;">Вас вітає служба безпеки</p>
           <h1 style="width: 400px; margin: 5px; text-align: center; font-size: 40px; font-weight: 600; color: rgba(0, 0, 0, 0.678);">Discussio</h1>
@@ -109,7 +60,7 @@ export class RegistrationService {
                 await conect.execute('INSERT INTO features (user_id) VALUES (?)', [rows1.insertId])
                 await conect.execute('INSERT INTO user_parametrs (user_id) VALUES (?)', [rows1.insertId])
                 await conect.execute('INSERT INTO user_status (user_id) VALUES (?)', [rows1.insertId])
-                res.status(200).json({ status: true, email: inf.regEmail, password: inf.regPassword});
+                res.status(200).json({ status: true, email: inf.regEmail, password: check.password});
             }catch(err){
               res.status(200).json({ status: "Не правильно передані данні" })
             }finally{conect.release();}
@@ -155,6 +106,10 @@ export class RegistrationService {
           if(check.attempt_counter < 5){
             const conee = mysql.createConnection(config)
             try{
+              const password = inf.password;
+              const salt = '-vse23Discuss53213yt';
+              const hash = crypto.createHash('sha256').update(password + salt).digest('hex');
+              inf.password = hash.slice(0, 30); 
               conee.query(
                 'UPDATE users SET password = ? WHERE user_mail = ?;',
                 // eslint-disable-next-line prettier/prettier
