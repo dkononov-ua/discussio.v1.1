@@ -24,11 +24,16 @@ export class FlatinfoService {
                 try{
                     conee.query("UPDATE parametrs SET rooms = ?, repair_status = ?, area = ?, kitchen_area = ?, balcony = ?, floor = ?, option_flat = ? WHERE flat_id = ?",
                     [tok.new.rooms, tok.new.repair_status, tok.new.area, tok.new.kitchen_area, tok.new.balcony, tok.new.floor, tok.new.option_flat, fl.flat_id],
-                    (er, rrr) => {
+                    async (er, rrr) => {
                         if (er) {
                             res.status(200).json({ status: "Не правильно передані данні" })
                         } else {
-                            res.status(200).json({ status: "Параметри успішно додані" });
+                            let rentCheck = await this.Service.checkParamsForRent(tok.flat_id)
+                            if(rentCheck == true){
+                                res.status(200).json({ status: "Параметри успішно додані" });
+                            }else{
+                                res.status(200).json({ status: "Параметри успішно додані", rent: rentCheck });
+                            }
                         }
                     })
                 }catch(err){}finally{conee.end()}
@@ -49,11 +54,16 @@ export class FlatinfoService {
                 try{
                     conee.query("UPDATE flat SET country = ?, region = ?, city = ?, street = ?,  houseNumber = ?, apartment = ?, flat_index = ?, distance_metro = ?, distance_stop = ?, distance_shop = ?, distance_green = ?, distance_parking = ? WHERE flat_id = ?",
                     [tok.new.country, tok.new.region, tok.new.city, tok.new.street, tok.new.houseNumber, tok.new.apartment, tok.new.flat_index, tok.new.distance_metro, tok.new.distance_stop, tok.new.distance_shop, tok.new.distance_green, tok.new.distance_parking, fl.flat_id],
-                    (err, resuuuu) => {
+                    async (err, resuuuu) => {
                         if (err) {
                             res.status(200).json({ status: "Не правильно передані данні" })
                         } else {
-                            res.status(200).json({ status: "Параметри успішно додані" });
+                            let rentCheck = await this.Service.checkParamsForRent(tok.flat_id)
+                            if(rentCheck == true){
+                                res.status(200).json({ status: "Параметри успішно додані" });
+                            }else{
+                                res.status(200).json({ status: "Параметри успішно додані", rent: rentCheck });
+                            }
                         }
                     })
                 }catch(err){}finally{conee.end()}
@@ -75,11 +85,16 @@ export class FlatinfoService {
                 try{
                     conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, data = ?, about = ? WHERE flat_id = ?",
                     [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, new Date(), tok.flat.about, fl.flat_id],
-                    (er, rrrr) => {
+                    async (er, rrrr) => {
                         if (er) {
                             res.status(200).json({ status: "Не правильно передані данні" })
                         } else {
-                            res.status(200).json({ status: "Параметри успішно додані" });
+                            let rentCheck = await this.Service.checkParamsForRent(tok.flat_id)
+                            if(rentCheck == true){
+                                res.status(200).json({ status: "Параметри успішно додані" });
+                            }else{
+                                res.status(200).json({ status: "Параметри успішно додані", rent: rentCheck });
+                            }
                         }
                     })
                 }catch(err){}finally{conee.end()}
@@ -92,11 +107,16 @@ export class FlatinfoService {
                     try{
                         conee.query("UPDATE about SET  woman = ?, man = ?, family = ?, students = ?, animals = ?, bunker = ?, price_m = ?, price_d = ?, option_pay = ?, room = ?, private = ?, rent = ?, about = ?, data = ? WHERE flat_id = ?",
                         [tok.flat.woman, tok.flat.man, tok.flat.family, tok.flat.students, tok.flat.animals, tok.flat.bunker, tok.flat.price_m, tok.flat.price_d, tok.flat.option_pay, tok.flat.room, tok.flat.private, tok.flat.rent, tok.flat.about, new Date(), admin.flat_id],
-                        (er, rrrr) => {
+                        async (er, rrrr) => {
                             if (er) {
                                 res.status(200).json({ status: "Не правильно передані данні" })
                             } else {
-                                res.status(200).json({ status: "Параметри успішно додані" });
+                                let rentCheck = await this.Service.checkParamsForRent(tok.flat_id)
+                                if(rentCheck == true){
+                                    res.status(200).json({ status: "Параметри успішно додані" });
+                                }else{
+                                    res.status(200).json({ status: "Параметри успішно додані", rent: rentCheck });
+                                }
                             }
                         })
                     }catch(err){}finally{conee.end()}
@@ -389,8 +409,13 @@ export class FlatinfoService {
                     if(rows1[0] !== undefined){
                         await conect.execute('DELETE FROM flat_img WHERE flat_id = ? AND img = ?', [rows1[0].flat_id, rows1[0].img])
                         if(rows1[0].img){
-                            unlink("../../code/Static/flat/" + rows1[0].img, (e)=>{
-                                res.status(200).json({ status: "Видалення було успішне" });
+                            unlink("../../code/Static/flat/" + rows1[0].img, async (e)=>{
+                                let rentCheck = await this.Service.checkParamsForRent(tok.flat_id)
+                                if(rentCheck == true){
+                                    res.status(200).json({ status: "Параметри успішно додані" });
+                                }else{
+                                    res.status(200).json({ status: "Видалення було успішне", rent: rentCheck });
+                                }
                             })
                         }else{
                             res.status(200).json({ status: "Видалення було успішне" }); 

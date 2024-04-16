@@ -6,6 +6,54 @@ import conect2 from 'src/db_promise';
 @Injectable()
 export class Service {
 
+  async checkParamsForRent(flat_id: any) {
+    const conect = await conect2.getConnection();
+    try{
+      let [rows, fields]: [any, any] = await conect.execute('SELECT region, city, street, houseNumber FROM flat WHERE flat_id = ?;', [flat_id])
+      let flatCheck : any = []
+      for (const property in rows[0]) {
+        if(rows[0][property] == null){
+          flatCheck.push(property)
+        }
+      }
+      let [rows2, fields2]: [any, any] = await conect.execute('SELECT rooms, area, floor, option_flat FROM parametrs WHERE flat_id = ?;', [flat_id])
+      for (const property in rows2[0]) {
+        if(rows2[0][property] == null){
+          flatCheck.push(property)
+        }
+      }
+      let [rows3, fields3]: [any, any] = await conect.execute('SELECT option_pay, room FROM about WHERE flat_id = ?;', [flat_id])
+      for (const property in rows3[0]) {
+        if(rows3[0][property] == null){
+          flatCheck.push(property)
+        }
+      }
+      let [rows4, fields4]: [any, any] = await conect.execute('SELECT * FROM flat_img WHERE flat_id = ?;', [flat_id])
+
+      if (flatCheck.length == 0) {
+        if(rows4.length > 1){
+          return true
+        }else{
+          let [rows4, fields4]: [any, any] = await conect.execute('UPDATE about SET rent = ? WHERE flat_id = ?;', [false ,flat_id])
+          return "Додайте фото"
+        }
+      } else {
+        let [rows4, fields4]: [any, any] = await conect.execute('UPDATE about SET rent = ? WHERE flat_id = ?;', [false ,flat_id])
+        return flatCheck
+      }
+    }catch(err){
+      return false
+    }finally{conect.release();}
+  }
+
+
+
+
+
+
+
+
+
   async getFlatinf(flat_id: any) {
     const conect = await conect2.getConnection();
     try{
