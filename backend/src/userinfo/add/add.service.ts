@@ -15,8 +15,9 @@ export class AddService {
         if(a){
             const conee = mysql.createConnection(config)
             try{
-                conee.query("UPDATE users SET firstName = ?, lastName = ?, surName = ?, password = ? WHERE user_id = ?",
-                [tok.new.firstName, tok.new.lastName, tok.new.surName, tok.auth.password, a.user_id],
+                console.log(tok)
+                conee.query("UPDATE users SET firstName = ?, lastName = ?, surName = ?, dob = ? WHERE user_id = ?",
+                [tok.new.firstName, tok.new.lastName, tok.new.surName, new Date(tok.new.dob), a.user_id],
                 (err, resuuuu)=>{
                     if (err) {  
                         res.status(200).json({ status: "Не правильно передані данні" })

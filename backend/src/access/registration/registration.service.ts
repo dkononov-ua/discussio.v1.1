@@ -7,7 +7,7 @@ import sendMail from 'src/email';
 import { Service } from '../service';
 import conect2 from 'src/db_promise';
 import * as crypto from "crypto"
-
+import admin from 'src/firebaseConfig';
 
 @Injectable()
 export class RegistrationService {
@@ -130,4 +130,50 @@ export class RegistrationService {
         }
     }
 
+
+
+
+    async googleLogin(inf: any, res: any): Promise<any> {
+      const decodeValue = await admin.auth().verifyIdToken(inf.idToken)
+      console.log(decodeValue.email)
+      if(decodeValue.email == inf.email){
+        let a = await this.Service.registercheck(inf.email)
+        const pass = inf.idToken.slice(0, 30)
+        const salt = '-vse23Discuss53213yt';
+        const hash = crypto.createHash('sha256').update(pass + salt).digest('hex').slice(0, 30);;
+        
+        if(a){
+          console.log(11)
+          const conect = await conect2.getConnection();
+          try{
+            let [rows1, fields1] : [any, any] = await conect.execute ('UPDATE users SET password = ? WHERE user_mail = ?;', [hash, inf.email])
+            res.status(200).json({ status: true, email: inf.email, password: hash});
+          }catch(err){
+            res.status(200).json({ status: "Не правильно передані данні" })
+          }finally{conect.release();}
+            
+        }else{
+          const conect = await conect2.getConnection();
+          try{
+            let [rows1, fields1] : [any, any] = await conect.execute ('INSERT INTO users (user_mail, password, data_create, dob) VALUES (?, ?, ?, ?)', [inf.email, hash, new Date(), new Date()])
+            await conect.execute('INSERT INTO contacts (user_id) VALUES (?)', [rows1.insertId])
+            await conect.execute('INSERT INTO user_img (user_id, img) VALUES (?, ?)', [rows1.insertId, "user_default.svg"])
+            await conect.execute('INSERT INTO features (user_id) VALUES (?)', [rows1.insertId])
+            await conect.execute('INSERT INTO user_parametrs (user_id) VALUES (?)', [rows1.insertId])
+            await conect.execute('INSERT INTO user_status (user_id) VALUES (?)', [rows1.insertId])
+            res.status(200).json({ status: true, email: inf.email, password: hash});
+          }catch(err){
+            console.log(err)
+            res.status(200).json({ status: "Не правильно передані данні" })
+          }finally{conect.release();}
+        }
+      }else{
+        res.status(200).json({ status: "))))))))" })
+      }
+
+    }
+
+    
 }
+
+

@@ -6,11 +6,6 @@ export class RegistrationController {
 
   constructor(private readonly regService: RegistrationService) {}
 
-  // @Post()
-  // // eslint-disable-next-line @typescript-eslint/ban-types
-  // async getRegister(@Response() res, @Body() tok: Object): Promise<any> {
-  //   await this.regService.getRegister(tok, res);
-  // }
 
   @Post('first')
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -34,6 +29,12 @@ export class RegistrationController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   async forgotpass2(@Response() res, @Body() tok: Object): Promise<any> {
     await this.regService.forgotpass2(tok, res);
+  }
+
+  @Post('googleLogin')
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  async googleLogin(@Response() res, @Body() tok: Object): Promise<any> {
+    await this.regService.googleLogin(tok, res);
   }
 
 
