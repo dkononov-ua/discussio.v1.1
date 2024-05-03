@@ -25,6 +25,8 @@ export class UserinfoService {
         let par = await this.appService.getUserParams(a.user_id)
         res.status(200).json({ status: true, inf: a, cont: contacts, img: "Фото не було знайдено", agree: agree, parametrs: par})
       }
+    }else{
+      res.status(200).json({ status: false})
     }
   }
 
@@ -33,6 +35,8 @@ export class UserinfoService {
     if(a){
       let agree = await this.Service.countagree(a.user_id) 
         res.status(200).json({ status: true, agree: agree})
+    }else{
+      res.status(200).json({ status: false})
     }
   }
 

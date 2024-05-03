@@ -41,7 +41,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -71,7 +71,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -125,7 +125,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -174,7 +174,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -199,7 +199,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -216,8 +216,8 @@ export class FlatinfoService {
             }catch(err){
                 res.status(200).json({ status: "Не правильно передані данні" })
             }finally{conect.release()}
-        } else {
-            res.status(200).json({ status: "Не вірний імейл або пароль" });
+        }else{
+            res.status(200).json({ status: false})
         }
     }
 
@@ -252,7 +252,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: "Будинок з таким ID вже існує" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -300,7 +300,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -354,7 +354,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }      
     }
 
@@ -374,7 +374,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -393,7 +393,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }
     }
 
@@ -452,7 +452,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
+            res.status(200).json({ status: false})
         }      
     }
 
