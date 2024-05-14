@@ -210,7 +210,7 @@ export class ChatService {
           }else{
             const admin = await this.appService.citizen(a.user_id, tok.flat_id);
             if(admin.acces_flat_chats === 1){
-              const chat = await this.Service.getChat(fl.flat_id, tok.user_id)
+              const chat = await this.Service.getChat(tok.flat_id, tok.user_id)
               if(chat){
                 if(await this.appService.getAgentFLS(tok.user_id)){
                   res.status(200).json({ status: await this.Service.readMessageFlat(chat.user_id, chat.chat_id) });
@@ -264,7 +264,7 @@ export class ChatService {
           }else{
             const admin = await this.appService.citizen(a.user_id, tok.flat_id);
             if(admin.acces_flat_chats === 1){
-              const chat = await this.Service.getChat(fl.flat_id, tok.user_id)
+              const chat = await this.Service.getChat(tok.flat_id, tok.user_id)
               if(chat){
                 if(await this.appService.getAgentFLS(tok.user_id)){
                   res.status(200).json({ status: await this.Service.getNewmessage(chat.chat_id, tok.data, tok.offs) });
@@ -327,3 +327,4 @@ export class ChatService {
     }
 
 }
+

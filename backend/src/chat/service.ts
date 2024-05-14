@@ -65,6 +65,8 @@ export class Service {
   
   }
 
+
+
   async getNewmessage(chat_id: string, data: Date, offs : string){
     const startDate = new Date(data);
     const conect = await conect2.getConnection();
