@@ -139,11 +139,12 @@ export class FlatinfoService {
                     let [rows1, fields1] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [fl.flat_id])
                     let [rows2, fields2] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [fl.flat_id])
                     let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [fl.flat_id])
+                    let [rows4, fields4] = await conect.execute ('SELECT * FROM flat_status WHERE flat_id = ?;', [fl.flat_id])
                     if(Array.isArray(rows3)){
                         if (rows3[0] === undefined) {
-                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема" });
+                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема", flatStat: rows4 });
                         } else {
-                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: rows3 });
+                            res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: rows3, flatStat: rows4 });
                         }
                     }else{
                         res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема" });
@@ -159,11 +160,13 @@ export class FlatinfoService {
                         let [rows2, fields2] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [admin.flat_id])
                         let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id])
                         let [rows4, fields4] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [admin.flat_id])
+                        let [rows5, fields5] = await conect.execute ('SELECT * FROM flat_status WHERE flat_id = ?;', [fl.flat_id])
+
                         if(Array.isArray(rows3)){
                             if (rows3[0] === undefined) {
-                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin });
+                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin, flatStat: rows5 });
                             } else {
-                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: rows3, acces: admin });
+                                res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: rows3, acces: admin, flatStat: rows5 });
                             }
                         }else{
                             res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin });
@@ -174,7 +177,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 

@@ -15,7 +15,7 @@ export class SearchService {
             let query = 'SELECT';
         let params = [];
         let metod = " FROM flat JOIN parametrs ON flat.flat_id = parametrs.flat_id JOIN about ON flat.flat_id = about.flat_id JOIN flat_status ON flat.flat_id = flat_status.flat_id WHERE rent = 1 AND banned = FALSE"
-        const inf = " flat.flat_id, flat.flat_name, about.data, flat.country, flat.region, flat.city, flat.street, flat.houseNumber, flat.apartment, flat.flat_index, flat.distance_metro, flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.price_m, about.price_d, about.about, about.room, about.option_pay, parametrs.rooms, parametrs.repair_status, parametrs.area, parametrs.kitchen_area, parametrs.balcony, parametrs.floor, parametrs.option_flat";
+        const inf = " flat.flat_id, flat.flat_name, about.data, flat.country, flat.region, flat.city, flat.street, flat.houseNumber, flat.apartment, flat_status.realll, flat_status.checked, flat.flat_index, flat.distance_metro, flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.price_m, about.price_d, about.about, about.room, about.option_pay, parametrs.rooms, parametrs.repair_status, parametrs.area, parametrs.kitchen_area, parametrs.balcony, parametrs.floor, parametrs.option_flat";
 
         if (tok.flat_id) {
             metod += ' AND flat.flat_id = ?';
@@ -213,12 +213,16 @@ export class SearchService {
                             } else {
                                 let agent = await this.appService.agent(e.flat_id)
                                 let rating :any
+                                let rie : any
                                 if(agent){
                                     rating = await this.Service.getFlatRating(agent.user_id)
+                                    rie = {rielt: agent.realll, owner: agent.checked }
                                 }else{
                                     let owner = await this.appService.getFlatOwner(e.flat_id)
+                                    rie = {rielt: owner.realll, owner: owner.checked }
                                     rating = await this.Service.getFlatRating(owner.owner_id)
                                 }
+                                e.rie = rie
                                 e.img = resq.map((i: any) => i.img)
                                 e.rating = rating 
                                 resolve(e)

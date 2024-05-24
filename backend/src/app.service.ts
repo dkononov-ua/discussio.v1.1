@@ -56,8 +56,10 @@ export class AppService {
     const conect = await conect2.getConnection();
     try{
       let [rows, fields] = await conect.execute('SELECT * FROM citizen WHERE flat_id = ? AND acces_agent = TRUE;', [flat_id])
-      if (rows[0] !== undefined) {
-        return rows[0]
+      let [rows2, fields2] = await conect.execute('SELECT user_status.realll, user_status.checked, users.user_id FROM users JOIN user_status ON users.user_id = user_status.user_id WHERE users.user_id = ?;', [rows[0].user_id])
+
+      if (rows2[0] !== undefined) {
+        return rows2[0]
       } else {
         return false
       }
@@ -71,8 +73,10 @@ export class AppService {
     const conect = await conect2.getConnection();
     try{
       let [rows, fields] = await conect.execute('SELECT owner_id FROM flat WHERE flat_id = ?', [flat_id])
-      if (rows[0] !== undefined) {
-        return rows[0]
+      let [rows2, fields2] = await conect.execute('SELECT user_status.realll, user_status.checked, users.user_id FROM users JOIN user_status ON users.user_id = user_status.user_id WHERE users.user_id = ?;', [rows[0].owner_id])
+
+      if (rows2[0] !== undefined) {
+        return rows2[0]
       } else {
         return false
       }
