@@ -28,9 +28,9 @@ export class Service {
         features.students, features.animals, features.bunker, features.option_pay, features.price_of, features.price_to, features.house,\
         features.room, features.flat, features.agree_search, features.looking_woman, features.looking_man, features.rooms_of,\
         features.rooms_to, features.repair_status, features.area_of, features.area_to, features.balcony, features.purpose_rent, features.days,\
-        features.weeks, features.mounths, features.years, features.day_counts \
+        features.weeks, features.mounths, features.years, features.day_counts, user_status.realll, user_status.checked \
         FROM users JOIN contacts ON users.user_id = contacts.user_id JOIN features ON users.user_id = features.user_id \
-        JOIN user_img ON users.user_id = user_img.user_id WHERE users.user_id = ?", [user_id])
+        JOIN user_img ON users.user_id = user_img.user_id JOIN user_status ON users.user_id = user_status.user_id WHERE users.user_id = ?", [user_id])
         
         if (rows[0] !== undefined) {
           return rows[0]

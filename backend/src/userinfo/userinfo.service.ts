@@ -25,8 +25,6 @@ export class UserinfoService {
         let par = await this.appService.getUserParams(a.user_id)
         res.status(200).json({ status: true, inf: a, cont: contacts, img: "Фото не було знайдено", agree: agree, parametrs: par})
       }
-    }else{
-      res.status(200).json({ status: false})
     }
   }
 
@@ -35,8 +33,6 @@ export class UserinfoService {
     if(a){
       let agree = await this.Service.countagree(a.user_id) 
         res.status(200).json({ status: true, agree: agree})
-    }else{
-      res.status(200).json({ status: false})
     }
   }
 
@@ -60,14 +56,14 @@ export class UserinfoService {
           }
         }else{
           const owner = await this.appService.getFlatOwner(tok.flat_id);
-          let img = await this.Service.getUserImg({user_id: owner.owner_id})
+          let img = await this.Service.getUserImg({user_id: owner.user_id})
           if(img){
-            let contacts = await this.Service.getContacts({user_id: owner.owner_id})
-            let ag = await this.appService.getAgentFLS(owner.owner_id)
+            let contacts = await this.Service.getContacts({user_id: owner.user_id})
+            let ag = await this.appService.getAgentFLS(owner.user_id)
             res.status(200).json({ status: true, inf: ag, cont: contacts, img: img})
           }else{
-            let contacts = await this.Service.getContacts({user_id: owner.owner_id})
-            let ag = await this.appService.getAgentFLS(owner.owner_id)
+            let contacts = await this.Service.getContacts({user_id: owner.user_id})
+            let ag = await this.appService.getAgentFLS(owner.user_id)
             res.status(200).json({ status: true, inf: ag, cont: contacts, img: "Фото не було знайдено"})
           }
         }

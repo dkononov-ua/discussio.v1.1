@@ -28,8 +28,8 @@ export class Service {
       flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, \
       about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.option_pay, about.price_m, \
       about.price_d, about.about, parametrs.rooms, parametrs.repair_status, parametrs.area, \
-      parametrs.kitchen_area, parametrs.balcony, parametrs.floor FROM flat \
-      JOIN parametrs ON flat.flat_id = parametrs.flat_id JOIN about ON flat.flat_id = about.flat_id \
+      parametrs.kitchen_area, parametrs.balcony, parametrs.floor, flat_status.realll, flat_status.checked FROM flat \
+      JOIN parametrs ON flat.flat_id = parametrs.flat_id JOIN about ON flat.flat_id = about.flat_id JOIN flat_status ON flat.flat_id = flat_status.flat_id \
       WHERE about.rent = 1 AND flat.flat_id = ?", [flat_id])
       let [img, fie]: [Array<any> | any, any] = await conect.execute("SELECT * FROM flat_img WHERE flat_id = ?", [flat_id])
       if (rows[0] !== undefined) {
@@ -62,9 +62,9 @@ export class Service {
     const conect = await conect2.getConnection();
     try{
       let [rows, fields] = await conect.execute("SELECT users.user_id, users.firstName, users.lastName, users.surName, \
-      contacts.viber, contacts.instagram, contacts.telegram, contacts.facebook, user_img.img \
+      contacts.viber, contacts.instagram, contacts.telegram, contacts.facebook, user_img.img, user_status.realll, user_status.checked \
       FROM users JOIN contacts ON users.user_id = contacts.user_id \
-      JOIN user_img ON users.user_id = user_img.user_id WHERE users.user_id = ?", [user_id])
+      JOIN user_img ON users.user_id = user_img.user_id JOIN user_status ON users.user_id = user_status.user_id WHERE users.user_id = ?", [user_id])
       if (rows[0] !== undefined) {
         return rows[0]
       } else {

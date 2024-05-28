@@ -301,7 +301,7 @@ export class CitizenService {
         res.status(200).json(cit);
       }else{
         const admin = await this.appService.citizen(a.user_id, tok.flat_id);
-        if(admin.acces_citizen === 1){
+        if(admin.acces_admin === 1  && admin.acces_citizen === 1){
           const subsID: Array<any> | any = await this.Service.getIDCitizen(
             admin.flat_id,
             tok.offs
