@@ -41,7 +41,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -71,7 +71,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -125,7 +125,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -160,7 +160,7 @@ export class FlatinfoService {
                         let [rows2, fields2] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [admin.flat_id])
                         let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id])
                         let [rows4, fields4] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [admin.flat_id])
-                        let [rows5, fields5] = await conect.execute ('SELECT * FROM flat_status WHERE flat_id = ?;', [fl.flat_id])
+                        let [rows5, fields5] = await conect.execute ('SELECT * FROM flat_status WHERE flat_id = ?;', [admin.flat_id])
 
                         if(Array.isArray(rows3)){
                             if (rows3[0] === undefined) {
@@ -202,7 +202,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -219,8 +219,8 @@ export class FlatinfoService {
             }catch(err){
                 res.status(200).json({ status: "Не правильно передані данні" })
             }finally{conect.release()}
-        }else{
-            res.status(200).json({ status: false})
+        } else {
+            res.status(200).json({ status: "Не вірний імейл або пароль" });
         }
     }
 
@@ -255,7 +255,7 @@ export class FlatinfoService {
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Будинок з таким ID вже існує" });
         }
     }
 
@@ -303,7 +303,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -357,7 +357,7 @@ export class FlatinfoService {
                 }
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }      
     }
 
@@ -377,7 +377,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -396,7 +396,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }
     }
 
@@ -455,7 +455,7 @@ export class FlatinfoService {
                 }                
             }
         }else{
-            res.status(200).json({ status: false})
+            res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
         }      
     }
 
