@@ -23,7 +23,7 @@ export class AgreementService {
                     }
                 }else{
                     let owner = await this.appService.getFlatOwner(tok.flat_id);
-                    if(await this.Service.addAgreement(tok, owner.owner_id, tok.flat_id)){
+                    if(await this.Service.addAgreement(tok, owner.user_id, tok.flat_id)){
                         res.status(200).json({ status: "Договір створено" });
                     }else{
                         res.status(200).json({ status: "Данні введено не правильно" });
@@ -41,7 +41,7 @@ export class AgreementService {
                         }
                     }else{
                         let owner = await this.appService.getFlatOwner(tok.flat_id);
-                        if(await this.Service.addAgreement(tok, owner.owner_id, tok.flat_id)){
+                        if(await this.Service.addAgreement(tok, owner.user_id, tok.flat_id)){
                             res.status(200).json({ status: "Договір створено" });
                         }else{
                             res.status(200).json({ status: "Данні введено не правильно" });
