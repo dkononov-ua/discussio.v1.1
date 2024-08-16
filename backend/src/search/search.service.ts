@@ -252,10 +252,10 @@ export class SearchService {
     async getUsers(tok: any, res: any): Promise<any> {
         try {
 
-            let a = await this.appService.authentification(tok.auth)
-            let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
-            let admin = await this.appService.citizen(a.user_id, tok.flat_id)
-            if ((a && fl) || (a && admin.acces_subs)) {
+            // let a = await this.appService.authentification(tok.auth)
+            // let fl = await this.appService.flatCheck(a.user_id, tok.flat_id)
+            // let admin = await this.appService.citizen(a.user_id, tok.flat_id)
+            // if ((a && fl) || (a && admin.acces_subs)) {
                 let query = 'SELECT';
                 let params = [];
                 let metod = " FROM users JOIN features ON users.user_id = features.user_id JOIN user_img ON users.user_id = user_img.user_id JOIN user_status ON users.user_id = user_status.user_id WHERE features.agree_search = 1 AND user_status.banned = FALSE"
@@ -482,9 +482,9 @@ export class SearchService {
                 })
                 conee.end()
 
-            } else {
-                res.status(200).json({ status: false });
-            }
+            // } else {
+            //     res.status(200).json({ status: false });
+            // }
 
         } catch (err) {
             res.status(200).json({ status: false });
