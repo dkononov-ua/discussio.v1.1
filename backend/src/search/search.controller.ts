@@ -20,7 +20,9 @@ export class SearchController {
       @Query('price_of') price_of: string | Number, @Query('price_to') price_to: string | Number, @Query('limit') limit: string | Number, 
       @Query('area_of') area_of: string | Number, @Query('area_to') area_to: string | Number,
       @Query('rooms_of') rooms_of: string | Number, @Query('rooms_to') rooms_to: string | Number, @Query('street') street: string
-      , @Query('option_pay') option_pay: string, @Query('room') room: string, @Query('option_flat') option_flat: string, @Query('filterData') filterData:string) {
+      , @Query('district') district: string, @Query('micro_district') micro_district: string, @Query('metroname') metroname: string, @Query('filterData') filterData:string
+      , @Query('option_pay') option_pay: string, @Query('room') room: string, @Query('option_flat') option_flat: string, @Query('metrocolor') metrocolor:string
+      , @Query('floorless') floorless: string) {
       const params = {flat_id: flat_id, country: country,
         region: region, city: city, repair_status: repair_status,
         kitchen_area: kitchen_area, balcony: balcony,
@@ -28,7 +30,8 @@ export class SearchController {
         distance_stop: distance_stop, distance_shop: distance_shop, distance_green: distance_green,
         distance_parking: distance_parking, woman: woman, man: man, family: family, students: students, animals: animals,
         price_of: price_of, price_to: price_to, limit:limit, area_of: area_of, area_to: area_to, rooms_of: rooms_of, rooms_to: rooms_to, street:street,
-        option_pay: option_pay, room: room, option_flat: option_flat, filterData: filterData
+        option_pay: option_pay, room: room, option_flat: option_flat, filterData: filterData, district:district, micro_district:micro_district,
+        metroname:metroname, metrocolor:metrocolor, floorless:floorless
       };
       await this.SearchService.getFlats(params, res) 
     }

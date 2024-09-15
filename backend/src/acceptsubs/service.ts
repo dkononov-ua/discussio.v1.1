@@ -26,7 +26,7 @@ export class Service {
         contacts.viber, contacts.instagram, contacts.telegram, contacts.facebook, contacts.tell, contacts.mail, user_img.img, features.country, features.region, features.city, features.distance_metro, features.distance_stop,\
         features.distance_shop, features.distance_green, features.distance_parking, features.woman, features.man, features.about, features.family,\
         features.students, features.animals, features.bunker, features.option_pay, features.price_of, features.price_to, features.house,\
-        features.room, features.flat, features.agree_search, features.looking_woman, features.looking_man, features.rooms_of,\
+        features.room, features.flat, features.agree_search, features.looking_woman, features.looking_man, features.rooms_of, features.metroname, features.metrocolor, features.floor, features.district, features.micro_district,\
         features.rooms_to, features.repair_status, features.area_of, features.area_to, features.balcony, features.purpose_rent, features.days,\
         features.weeks, features.mounths, features.years, features.day_counts, user_status.realll, user_status.checked \
         FROM users JOIN contacts ON users.user_id = contacts.user_id JOIN features ON users.user_id = features.user_id \

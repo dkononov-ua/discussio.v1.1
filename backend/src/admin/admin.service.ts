@@ -102,4 +102,14 @@ export class AdminService {
     }
 
 
+    async getCountOfUser(tok: any, res: any): Promise<any> {
+        res.status(200).json({ status: await this.Service.getCountOfUsers(tok.user_id) });
+    }
+
+
+    async getCountOfFlat(tok: any, res: any): Promise<any> {
+        res.status(200).json({ status: await this.Service.getCountOfFlats(tok.flat_id) });
+    }
+
+
 }

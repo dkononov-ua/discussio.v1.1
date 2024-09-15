@@ -26,8 +26,8 @@ export class Service {
       let [rows, fields] = await conect.execute("SELECT flat.flat_id, flat.flat_name, flat.country, flat.region, flat.city, flat.street, \
       flat.houseNumber, flat.apartment, flat.flat_index, flat.distance_metro, \
       flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, \
-      about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.option_pay, about.price_m, \
-      about.price_d, about.about, parametrs.rooms, parametrs.repair_status, parametrs.area, \
+      about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.option_pay, about.price_m, flat.district, flat.micro_district, \
+      about.price_d, about.about, parametrs.rooms, parametrs.repair_status, parametrs.area, parametrs.metroname, parametrs.metrocolor, parametrs.floorless, \
       parametrs.kitchen_area, parametrs.balcony, parametrs.floor, flat_status.realll, flat_status.checked FROM flat \
       JOIN parametrs ON flat.flat_id = parametrs.flat_id JOIN about ON flat.flat_id = about.flat_id JOIN flat_status ON flat.flat_id = flat_status.flat_id \
       WHERE about.rent = 1 AND flat.flat_id = ?", [flat_id])

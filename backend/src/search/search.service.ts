@@ -15,7 +15,30 @@ export class SearchService {
             let query = 'SELECT';
         let params = [];
         let metod = " FROM flat JOIN parametrs ON flat.flat_id = parametrs.flat_id JOIN about ON flat.flat_id = about.flat_id JOIN flat_status ON flat.flat_id = flat_status.flat_id WHERE rent = 1 AND banned = FALSE"
-        const inf = " flat.flat_id, flat.flat_name, about.data, flat.country, flat.region, flat.city, flat.street, flat.houseNumber, flat.apartment, flat_status.realll, flat_status.checked, flat.flat_index, flat.distance_metro, flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.price_m, about.price_d, about.about, about.room, about.option_pay, parametrs.rooms, parametrs.repair_status, parametrs.area, parametrs.kitchen_area, parametrs.balcony, parametrs.floor, parametrs.option_flat";
+        const inf = " flat.flat_id, flat.flat_name, about.data, flat.country, flat.region, flat.city, flat.street, flat.apartment, flat_status.realll, flat_status.checked, flat.flat_index, flat.distance_metro, flat.distance_stop, flat.distance_shop, flat.distance_green, flat.distance_parking, about.woman, about.man, about.family, about.students, about.animals, about.bunker, about.price_m, about.price_d, about.about, about.room, about.option_pay, parametrs.rooms, parametrs.repair_status, parametrs.area, parametrs.kitchen_area, parametrs.balcony, parametrs.floor, parametrs.option_flat, flat.district, flat.micro_district, parametrs.metroname, parametrs.metrocolor, parametrs.floorless";
+
+        if (tok.district) {
+            metod += ' AND flat.district = ?';
+            params.push(tok.district);
+        }
+        if (tok.micro_district) {
+            metod += ' AND flat.micro_district = ?';
+            params.push(tok.micro_district);
+        }
+        if (tok.metroname) {
+            metod += ' AND parametrs.metroname = ?';
+            params.push(tok.metroname);
+        }
+        if (tok.metrocolor) {
+            metod += ' AND parametrs.metrocolor = ?';
+            params.push(tok.option_flat);
+        }
+        if (tok.floorless) {
+            metod += ' AND parametrs.floorless = ?';
+            params.push(tok.floorless);
+        }
+
+
 
         if (tok.flat_id) {
             metod += ' AND flat.flat_id = ?';
@@ -259,8 +282,32 @@ export class SearchService {
                 let query = 'SELECT';
                 let params = [];
                 let metod = " FROM users JOIN features ON users.user_id = features.user_id JOIN user_img ON users.user_id = user_img.user_id JOIN user_status ON users.user_id = user_status.user_id WHERE features.agree_search = 1 AND user_status.banned = FALSE"
-                const inf = " features.country, features.about, features.data, features.region, features.city, features.distance_metro, features.distance_stop, features.distance_shop, features.distance_green, features.distance_parking, features.woman, features.man, features.family, features.students, features.animals, features.bunker, features.option_pay, features.price_of, features.price_to, features.house, features.room, features.flat, features.agree_search, features.looking_woman, features.looking_man, features.rooms_of, features.rooms_to, features.repair_status, features.area_of, features.area_to, features.balcony, features.purpose_rent, features.days, features.weeks, features.mounths, features.years, features.day_counts, users.user_id, users.firstName, users.lastName, user_img.img, user_status.realll, user_status.checked";
+                const inf = " features.country, features.about, features.data, features.region, features.city, features.distance_metro, features.distance_stop, features.distance_shop, features.distance_green, features.distance_parking, features.woman, features.man, features.family, features.students, features.animals, features.bunker, features.option_pay, features.price_of, features.price_to, features.house, features.room, features.flat, features.agree_search, features.looking_woman, features.looking_man, features.rooms_of, features.rooms_to, features.repair_status, features.area_of, features.area_to, features.balcony, features.purpose_rent, features.days, features.weeks, features.mounths, features.years, features.day_counts, users.user_id, users.firstName, users.lastName, user_img.img, user_status.realll, user_status.checked, features.metroname, features.metrocolor, features.floor, features.district, features.micro_district";
 
+                if (tok.metroname) {
+                    metod += ' AND features.metroname = ?';
+                    params.push(tok.metroname);
+                }
+
+                if (tok.floor) {
+                    metod += ' AND features.floor = ?';
+                    params.push(tok.floor);
+                }
+
+                if (tok.metrocolor) {
+                    metod += ' AND features.metrocolor = ?';
+                    params.push(tok.metrocolor);
+                }
+
+                if (tok.district) {
+                    metod += ' AND features.district = ?';
+                    params.push(tok.district);
+                }
+
+                if (tok.micro_district) {
+                    metod += ' AND features.micro_district = ?';
+                    params.push(tok.micro_district);
+                }
 
                 if (tok.user_id) {
                     metod += ' AND features.user_id = ?';

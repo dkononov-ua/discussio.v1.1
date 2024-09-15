@@ -22,8 +22,8 @@ export class FlatinfoService {
             if(fl){
                 const conee = mysql.createConnection(config)
                 try{
-                    conee.query("UPDATE parametrs SET rooms = ?, repair_status = ?, area = ?, kitchen_area = ?, balcony = ?, floor = ?, option_flat = ? WHERE flat_id = ?",
-                    [tok.new.rooms, tok.new.repair_status, tok.new.area, tok.new.kitchen_area, tok.new.balcony, tok.new.floor, tok.new.option_flat, fl.flat_id],
+                    conee.query("UPDATE parametrs SET rooms = ?, repair_status = ?, area = ?, kitchen_area = ?, balcony = ?, floor = ?, option_flat = ?, metroname = ?, metrocolor = ?, floorless = ? WHERE flat_id = ?",
+                    [tok.new.rooms, tok.new.repair_status, tok.new.area, tok.new.kitchen_area, tok.new.balcony, tok.new.floor, tok.new.option_flat, tok.new.metroname, tok.new.metrocolor, tok.new.floorless, fl.flat_id],
                     async (er, rrr) => {
                         if (er) {
                             res.status(200).json({ status: "Не правильно передані данні" })
@@ -52,8 +52,8 @@ export class FlatinfoService {
             if(fl){
                 const conee = mysql.createConnection(config)
                 try{
-                    conee.query("UPDATE flat SET country = ?, region = ?, city = ?, street = ?,  houseNumber = ?, apartment = ?, flat_index = ?, distance_metro = ?, distance_stop = ?, distance_shop = ?, distance_green = ?, distance_parking = ? WHERE flat_id = ?",
-                    [tok.new.country, tok.new.region, tok.new.city, tok.new.street, tok.new.houseNumber, tok.new.apartment, tok.new.flat_index, tok.new.distance_metro, tok.new.distance_stop, tok.new.distance_shop, tok.new.distance_green, tok.new.distance_parking, fl.flat_id],
+                    conee.query("UPDATE flat SET country = ?, region = ?, city = ?, street = ?,  houseNumber = ?, apartment = ?, flat_index = ?, distance_metro = ?, distance_stop = ?, distance_shop = ?, distance_green = ?, distance_parking = ?, district = ?, micro_district = ? WHERE flat_id = ?",
+                    [tok.new.country, tok.new.region, tok.new.city, tok.new.street, tok.new.houseNumber, tok.new.apartment, tok.new.flat_index, tok.new.distance_metro, tok.new.distance_stop, tok.new.distance_shop, tok.new.distance_green, tok.new.distance_parking, tok.new.district, tok.new.micro_district, fl.flat_id],
                     async (err, resuuuu) => {
                         if (err) {
                             res.status(200).json({ status: "Не правильно передані данні" })
@@ -156,7 +156,7 @@ export class FlatinfoService {
                 if(admin){
                     const conect = await conect2.getConnection();
                     try{
-                        let [rows1, fields1] = await conect.execute ('SELECT apartment, city, street, country, houseNumber, flat_index, flat_id, flat_name, region FROM flat WHERE flat_id = ?', [admin.flat_id])
+                        let [rows1, fields1] = await conect.execute ('SELECT apartment, city, street, country, houseNumber, flat_index, flat_id, flat_name, region, district, micro_district FROM flat WHERE flat_id = ?', [admin.flat_id])
                         let [rows2, fields2] = await conect.execute ('SELECT * FROM about WHERE flat_id = ?', [admin.flat_id])
                         let [rows3, fields3] = await conect.execute ('SELECT * FROM flat_img WHERE flat_id = ?', [admin.flat_id])
                         let [rows4, fields4] = await conect.execute ('SELECT * FROM parametrs WHERE flat_id = ?', [admin.flat_id])

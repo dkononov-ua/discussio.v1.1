@@ -70,5 +70,18 @@ export class AdminController {
     }
 
 
+    @Post("get/countofuser")
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    async getCountOfUser(@Response() res, @Body() tok: Object): Promise<any> {
+        await this.adminService.getCountOfUser(tok, res);
+    }
+
+    @Post("get/countofflat")
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    async getCountOfFlat(@Response() res, @Body() tok: Object): Promise<any> {
+        await this.adminService.getCountOfFlat(tok, res);
+    }
+
+
 
 }

@@ -205,5 +205,27 @@ export class Service {
   }
 
 
+  async getCountOfUsers(tok: any) {
+    const conect = await conect2.getConnection();
+    try{
+      let [rows2, fields2] = await conect.execute("SELECT COUNT(*) AS total \
+      FROM users", [])
+      return {count_users:rows2[0].total}
+    }catch(err){return [{ status: 'Немає підписників' }]}finally{conect.release();}
+
+  }
+
+
+  async getCountOfFlats(tok: any) {
+    const conect = await conect2.getConnection();
+    try{
+      let [rows2, fields2] = await conect.execute("SELECT COUNT(*) AS total \
+      FROM flat", []) 
+      return {count_flats:rows2[0].total} 
+    }catch(err){return false}finally{conect.release();}
+
+  }
+
+
 
 }

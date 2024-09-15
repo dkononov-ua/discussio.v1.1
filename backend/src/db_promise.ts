@@ -17,4 +17,5 @@ import config from './dbpar'
 
 const conect2 = mmm.createPool(config)
 
+
 export default conect2
