@@ -230,7 +230,7 @@ export class SearchService {
                 results.forEach(async(e: any) => {
                     let promise = new Promise(async(resolve, reject) => {
                         conee.query("SELECT * FROM flat_img WHERE flat_id = ?", [e.flat_id], async(er, resq: Array<any> | any) => {
-                            conee.end()
+                            
                             if (er) {
                                 reject(er)
                             } else {
@@ -262,7 +262,7 @@ export class SearchService {
             }).catch((error) => {
                 res.status(500).json({ error: error.message });
             })
-            
+            conee.end()
         })
 
         }catch(errrr){
