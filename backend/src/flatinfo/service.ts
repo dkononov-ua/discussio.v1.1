@@ -42,6 +42,7 @@ export class Service {
         return flatCheck
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -64,6 +65,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -82,6 +84,7 @@ export class Service {
         return rows
       }
     }catch(err){
+      console.log(err)
       return "Не правильно передані данні"
     }finally{conect.release();}
   }
@@ -122,7 +125,8 @@ export class Service {
         await conect.execute('DELETE FROM chat WHERE chat_id = ?', [i.chat_id])
         await conect.execute('DELETE FROM chat_name WHERE chat_id = ?', [i.chat_id])
       }))
-      }catch{
+      }catch(err){
+        console.log(err)
         return false
       }
       
@@ -148,6 +152,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 

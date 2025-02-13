@@ -26,6 +26,7 @@ export class SubsService {
                             conee.query('INSERT INTO subscribes (user_id, flat_id) VALUES (?, ?)', [a.user_id, tok.flat_id])
                             res.status(200).json({ status: "Ви успішно підписались" });
                         }catch(err){
+                            console.log(err)
                             res.status(200).json({ status: false });
                         }finally{conee.end()}
                     }else{
@@ -34,6 +35,7 @@ export class SubsService {
                             conee.query('DELETE FROM subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
                             res.status(200).json({ status: "Ви успішно відписались" });    
                         }catch(err){
+                            console.log(err)
                             res.status(200).json({ status: false });
                         }finally{conee.end()}
                     }
@@ -72,7 +74,8 @@ export class SubsService {
             }else{
                 res.status(200).json({ status: "Ви в дискусії" });
             }
-        } catch {
+        } catch(err) {
+            console.log(err)
             res.status(200).json({ status: "Ви не авторизовані" });
         }
 
@@ -93,6 +96,7 @@ export class SubsService {
                             conee.query('DELETE FROM subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
                             res.status(200).json({ status: true });
                         }catch(err){
+                            console.log(err)
                             res.status(200).json({ status: false });
                         }finally{conee.end()}
                     }else{
@@ -114,6 +118,7 @@ export class SubsService {
                                 conee.query('DELETE FROM subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
                                 res.status(200).json({ status: true });
                             }catch(err){
+                                console.log(err)
                                 res.status(200).json({ status: false });
                             }finally{conee.end()}
                         }else{
@@ -144,6 +149,7 @@ export class SubsService {
                         conee.query('DELETE FROM subscribes WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, tok.user_id])
                         res.status(200).json({ status: true });    
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: false });
                     }finally{conee.end()}
                 }else{
@@ -159,6 +165,7 @@ export class SubsService {
                             conee.query('DELETE FROM subscribes WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, tok.user_id])
                             res.status(200).json({ status: true });    
                         }catch(err){
+                            console.log(err)
                             res.status(200).json({ status: false });
                         }finally{conee.end()}
                     }else{

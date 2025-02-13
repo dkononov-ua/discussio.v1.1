@@ -61,7 +61,9 @@ export class Service {
         
         return {status: "Договір вже існує"}
       }
-      }catch(err){return false;}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return false;}finally{conect.release();}
   }
 
   async getAgreement(agreement_id: string, flat_id: string, user_id: string) {
@@ -74,7 +76,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -89,7 +93,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -116,7 +122,9 @@ export class Service {
       } else {
         return  false 
       }
-    }catch(err){return  false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return  false}finally{conect.release();}
 
   }
 
@@ -143,7 +151,9 @@ export class Service {
         
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -170,7 +180,9 @@ export class Service {
       } else {
         return false 
       }
-    }catch(err){return false }finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false }finally{conect.release();}
 
   }
 
@@ -198,7 +210,9 @@ export class Service {
         
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -230,7 +244,9 @@ export class Service {
         
         return true; 
       }
-      }catch(err){return {status: "Акт вже існує"};}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return {status: "Акт вже існує"};}finally{conect.release();}
 
   }
 
@@ -251,7 +267,9 @@ export class Service {
       }else{
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
     
   }

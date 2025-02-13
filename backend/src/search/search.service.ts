@@ -266,6 +266,7 @@ export class SearchService {
         })
 
         }catch(errrr){
+            console.log(errrr)
             res.status(500).json({ status: false });
         }
         
@@ -534,6 +535,7 @@ export class SearchService {
             // }
 
         } catch (err) {
+            console.log(err)
             res.status(200).json({ status: false });
         }
 

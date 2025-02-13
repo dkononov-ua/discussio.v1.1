@@ -45,6 +45,7 @@ export class RegistrationService {
             res.status(200).json({ status: "Ви не ввели почту або пароль"});
         }
       } catch (error) {
+        console.log(error)
         res.status(200).json({ status: "Не валідна дата"});
       }
 
@@ -67,6 +68,7 @@ export class RegistrationService {
                 await conect.execute('INSERT INTO user_status (user_id) VALUES (?)', [rows1.insertId])
                 res.status(200).json({ status: true, email: inf.regEmail, password: check.password});
             }catch(err){
+              console.log(err)
               res.status(200).json({ status: "Не правильно передані данні" })
             }finally{conect.release();}
           }else{
@@ -125,7 +127,9 @@ export class RegistrationService {
                     res.status(200).json({ status: true, email: check.email, password: inf.password});
                   },
                 );
-              }catch(err){res.status(200).json({ status: "Не правильний код"});}finally{conee.end()} 
+              }catch(err){
+                console.log(err)
+                res.status(200).json({ status: "Не правильний код"});}finally{conee.end()} 
             }else{
               await this.Service.updete_secure(check) 
               res.status(200).json({ status: "Не правильний код"});
@@ -134,6 +138,7 @@ export class RegistrationService {
             res.status(200).json({ status: false});
           }
         } catch (error) {
+          console.log(error)
           res.status(200).json({ status: "Не валідний токен" });
         }
 

@@ -33,7 +33,8 @@ export class ComunalService {
             }else{
                 res.status(200).json({ status:false });
             }
-        }catch{
+        }catch(err){
+            console.log(err)
             res.status(200).json({ status: false });}
         
     }
@@ -59,7 +60,8 @@ export class ComunalService {
             }else{
                 res.status(200).json({ status: false });
             }
-        }catch{
+        }catch(err){
+            console.log(err)
             res.status(200).json({ status: false });
         }
         
@@ -84,7 +86,8 @@ export class ComunalService {
         }else{
             res.status(200).json({ status: false });
         }
-        }catch{
+        }catch(err){
+            console.log(err)
             res.status(200).json({ status: false });
         }
         
@@ -111,7 +114,8 @@ export class ComunalService {
             }else{
                 res.status(200).json({ status: false });
             }
-        }catch{
+        }catch(err){
+            console.log(err)
             res.status(200).json({ status: false });
         }
     }

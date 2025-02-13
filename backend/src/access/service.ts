@@ -17,7 +17,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -30,7 +32,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -47,7 +51,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -64,7 +70,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release(); }
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release(); }
 
   }
 
@@ -80,7 +88,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -96,7 +106,9 @@ export class Service {
      } else {
        return false
      }
-    }catch(err){return false}finally{conect.release(); }
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release(); }
 
   }
 
@@ -111,7 +123,9 @@ export class Service {
         } else {
         return undefined
         }
-      }catch(err){return [123]}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return [123]}finally{conect.release();}
   }
 
 

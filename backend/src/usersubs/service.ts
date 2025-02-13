@@ -16,6 +16,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -31,6 +32,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -46,6 +48,7 @@ export class Service {
         return []
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -70,6 +73,7 @@ export class Service {
         return [{ status: 'Немає підписників' }]
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -86,6 +90,7 @@ export class Service {
         return []
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -100,6 +105,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -115,6 +121,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 

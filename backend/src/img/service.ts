@@ -16,6 +16,7 @@ export class Service {
 				return []
 			}
 		}catch(err){
+			console.log(err)
 			return []
 		}finally{conect.release();}
 
@@ -28,6 +29,7 @@ async addComunal(tok: any, user_id : string, img : string) {
 		[tok.flat_id, img, user_id, tok.comunal_name, tok.when_pay_m, tok.when_pay_y])
 		return rows
 	}catch(err){
+		console.log(err)
 		return false
 	}finally{conect.release();}
 

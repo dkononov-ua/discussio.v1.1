@@ -16,6 +16,7 @@ export class AppService {
         return  false 
       }
     }catch(err){
+      console.log(err)
       return  false 
     }finally{conect.release();}
     
@@ -31,6 +32,7 @@ export class AppService {
         return undefined
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -47,6 +49,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -64,6 +67,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -81,6 +85,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -107,6 +112,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -122,6 +128,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -137,6 +144,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -164,6 +172,7 @@ export class AppService {
         return { flat: rows[0], img: await Promise.all(img.map((i: any) => i.img)), owner: user }
       }  
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -190,6 +199,7 @@ export class AppService {
         return { flat: rows[0], img: await Promise.all(img.map((i: any) => i.img)), owner: user }
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -216,6 +226,7 @@ export class AppService {
       return { flat: rows[0], img: await Promise.all(img.map((i: any) => i.img)), owner: user }
     }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -240,6 +251,7 @@ export class AppService {
         return [{ status: 'Немає підтверджених підписників' }]
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -258,6 +270,7 @@ export class AppService {
         return [{ status: 'Немає підтверджених підписників' }]
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -285,6 +298,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -349,6 +363,7 @@ export class AppService {
       return false
     }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
     
@@ -366,6 +381,7 @@ export class AppService {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();} 
   }

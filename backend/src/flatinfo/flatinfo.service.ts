@@ -36,7 +36,7 @@ export class FlatinfoService {
                             }
                         }
                     })
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -66,7 +66,7 @@ export class FlatinfoService {
                             }
                         }
                     })
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -97,7 +97,7 @@ export class FlatinfoService {
                             }
                         }
                     })
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
 
                 
             }else{
@@ -119,7 +119,7 @@ export class FlatinfoService {
                                 }
                             }
                         })
-                    }catch(err){}finally{conee.end()}
+                    }catch(err){console.log(err)}finally{conee.end()}
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -149,7 +149,7 @@ export class FlatinfoService {
                     }else{
                         res.status(200).json({ status: true, flat: fl, about: rows1[0], param: rows2[0], imgs: "Картинок нема" });
                     }
-                }catch(err){}finally{conect.release();}
+                }catch(err){console.log(err)}finally{conect.release();}
 
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
@@ -171,7 +171,7 @@ export class FlatinfoService {
                         }else{
                             res.status(200).json({ status: true, flat: rows1[0], about: rows2[0], param: rows4[0], imgs: "Картинок нема", acces: admin });
                         }
-                    }catch(err){}finally{conect.release();}
+                    }catch(err){console.log(err)}finally{conect.release();}
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -196,6 +196,7 @@ export class FlatinfoService {
                     await conect.query('INSERT INTO flat_status (flat_id) VALUES (?)', [rows1.insertId]);
                     res.status(200).json({ status: "Нова оселя успішно створена" });
                 }catch(err){
+                    console.log(err)
                     res.status(200).json({ status: "Не правильно передані данні" })
                 }finally{conect.release()}
             }else{
@@ -217,6 +218,7 @@ export class FlatinfoService {
                 let flat_names = await this.Service.getFlatNames(rows2)
                 res.status(200).json({ status: true, ids: rows1, citizen_ids: flat_names });
             }catch(err){
+                console.log(err)
                 res.status(200).json({ status: "Не правильно передані данні" })
             }finally{conect.release()}
         } else {
@@ -250,7 +252,7 @@ export class FlatinfoService {
                     await this.Service.deleteFlat(fl.flat_id)
                     conee.query('DELETE FROM flat WHERE flat_id = ?', [fl.flat_id])
                     res.status(200).json({ status: "Будинок успішно видалено :(" });
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
             }
@@ -271,7 +273,7 @@ export class FlatinfoService {
                         res.status(200).json({ status: true, flat: tok.flat_id, imgs: img_results});
                     }
                 })
-            }catch(err){}finally{conee.end()}  
+            }catch(err){console.log(err)}finally{conee.end()}  
         }else{
           res.status(200).json({ status: false})
         }
@@ -288,7 +290,7 @@ export class FlatinfoService {
                     conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
                         res.status(200).json({ status: results});
                     })
-                }catch(err){}finally{conee.end()}  
+                }catch(err){console.log(err)}finally{conee.end()}  
             }else{
                 const admin = await this.appService.citizen(a.user_id, tok.flat_id);
                 if(admin){
@@ -297,7 +299,7 @@ export class FlatinfoService {
                         conee.query('SELECT * FROM filling WHERE flat_id = ?', [tok.flat_id], (_err, results) => {
                             res.status(200).json({ status: results});
                         })
-                    }catch(err){}finally{conee.end()}  
+                    }catch(err){console.log(err)}finally{conee.end()}  
                 }else{
                     res.status(200).json({ status: "Не співпало ID квартири з користувачем" });
                 }
@@ -328,6 +330,7 @@ export class FlatinfoService {
                         res.status(200).json({ status: false });
                     }
                 }catch(err){
+                    console.log(err)
                     res.status(200).json({ status: "Не правильно передані данні" })
                 }finally{conect.release()}
 
@@ -350,6 +353,7 @@ export class FlatinfoService {
                             res.status(200).json({ status: false });
                         }
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: "Не правильно передані данні" })
                     }finally{conect.release()}         
                 }else{
@@ -427,6 +431,7 @@ export class FlatinfoService {
                         res.status(200).json({ status: false });
                     }
                 }catch(err){
+                    console.log(err)
                     res.status(200).json({ status: "Не правильно передані данні" })
                 }finally{conect.release()}             
             }else{
@@ -448,6 +453,7 @@ export class FlatinfoService {
                             res.status(200).json({ status: false });
                         }
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: "Не правильно передані данні" })
                     }finally{conect.release()} 
                 }else{

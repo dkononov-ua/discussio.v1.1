@@ -18,7 +18,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -39,7 +41,9 @@ export class Service {
       }else{
         return false
       } 
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -61,7 +65,9 @@ export class Service {
       }else{
         return false
       } 
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
   
   }
 
@@ -79,7 +85,9 @@ export class Service {
      } else {
        return false
      }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -88,7 +96,9 @@ export class Service {
       try{
         conee.query('UPDATE message SET is_read = ? WHERE flat_id = ? AND chat_id = ? AND is_read = false;', [true, flat_id, chat_id],(e)=>{});
         return true
-      }catch(err){return false}finally{conee.end()}
+      }catch(err){
+        console.log(err)
+        return false}finally{conee.end()}
   }
 
   async readMessageFlat( user_id : string, chat_id: string){
@@ -96,7 +106,9 @@ export class Service {
       try{
         conee.query('UPDATE message SET is_read = ? WHERE user_id = ? AND chat_id = ? AND is_read = false;', [true, user_id, chat_id],(e)=>{});
         return true
-      }catch(err){return false}finally{conee.end()}
+      }catch(err){
+        console.log(err)
+        return false}finally{conee.end()}
   }
 
   async getChatsFlat(flat_id: string, offs : string){
@@ -115,7 +127,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -135,7 +149,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -150,7 +166,9 @@ export class Service {
      } else {
        return false
      }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -161,7 +179,9 @@ export class Service {
         conee.query("UPDATE chat SET message = ?, data = ? WHERE chat_id = ?;", [message, d, chat_id],(e)=>{})
         conee.query("INSERT INTO message (user_id, chat_id, message, data) VALUES (?, ?, ?, ?);", [user_id, chat_id, message, d],(e)=>{});
         return true
-      }catch(err){return false}finally{conee.end()}
+      }catch(err){
+        console.log(err)
+        return false}finally{conee.end()}
   }
 
   async sendMessageFlat( user_id : string, flat_id: string, chat_id: string, message: string){
@@ -172,7 +192,9 @@ export class Service {
         conee.query("INSERT INTO message (sender_id, flat_id, chat_id, message, data) VALUES (?, ?, ?, ?, ?);", [user_id, flat_id, chat_id, message, d],(e)=>{});
         
         return true
-      }catch(err){return false}finally{conee.end()}
+      }catch(err){
+        console.log(err)
+        return false}finally{conee.end()}
   }
 
   async addChat(flat_id: string, user_id : string){
@@ -182,7 +204,9 @@ export class Service {
         conee.query("INSERT INTO chat_name (chat_id) VALUES (?);", [flat_id + user_id + random],(e)=>{});
         conee.query("INSERT INTO chat (flat_id, user_id, chat_id) VALUES (?, ?, ?);", [flat_id, user_id, flat_id + user_id + random],(e)=>{});     
         return true
-      }catch(err){return false}finally{conee.end() }
+      }catch(err){
+        console.log(err)
+        return false}finally{conee.end() }
 
 
   }

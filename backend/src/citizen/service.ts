@@ -15,7 +15,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -28,7 +30,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -42,7 +46,9 @@ export class Service {
       } else {
         return  false 
       }
-    }catch(err){return  false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return  false}finally{conect.release();}
 
   }
 
@@ -55,7 +61,9 @@ export class Service {
       } else {
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
 
   }
 
@@ -72,7 +80,9 @@ export class Service {
       } else {
         return [{ status: 'Немає мешканців' }]
       }
-    }catch(err){return [{ status: 'Немає мешканців' }]}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return [{ status: 'Немає мешканців' }]}finally{conect.release();}
 
   }
 
@@ -85,7 +95,9 @@ export class Service {
       } else {
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
 
   }
 

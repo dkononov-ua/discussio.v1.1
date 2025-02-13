@@ -27,6 +27,7 @@ export class UsersubsService {
                                 conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
                                 res.status(200).json({ status: "Ви успішно підписались" });    
                             }catch(err){
+                                console.log(err)
                                 res.status(200).json({ status: false });
                             }finally{conee.end()}
                         }else{
@@ -35,6 +36,7 @@ export class UsersubsService {
                                 conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
                                 res.status(200).json({ status: "Ви успішно відписались" });
                             }catch(err){
+                                console.log(err)
                                 res.status(200).json({ status: false });
                             }finally{conee.end()}
                         }
@@ -58,6 +60,7 @@ export class UsersubsService {
                                     conee.query('INSERT INTO user_subscribes (user_id, flat_id) VALUES (?, ?)', [tok.user_id, tok.flat_id])
                                     res.status(200).json({ status: "Ви успішно підписались" });
                                 }catch(err){
+                                    console.log(err)
                                     res.status(200).json({ status: false });
                                 }finally{conee.end()}
                             }else{
@@ -66,6 +69,7 @@ export class UsersubsService {
                                     conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, tok.user_id])
                                     res.status(200).json({ status: "Ви успішно відписались" });
                                 }catch(err){
+                                    console.log(err)
                                     res.status(200).json({ status: false });
                                 }finally{conee.end()}
                             }
@@ -133,7 +137,8 @@ export class UsersubsService {
             }else{
                 res.status(200).json({ status: false });
             }
-        } catch {
+        } catch(err) {
+            console.log(err)
             res.status(200).json({ status: "Ви не авторизовані" });
         }
 
@@ -152,6 +157,7 @@ export class UsersubsService {
                         conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [subs.flat_id, subs.user_id])
                         res.status(200).json({ status: true });
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: false });
                     }finally{conee.end()}
 
@@ -178,6 +184,7 @@ export class UsersubsService {
                     conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, tok.user_id])
                     res.status(200).json({ status: true });
                 }catch(err){
+                    console.log(err)
                     res.status(200).json({ status: false });
                 }finally{conee.end()}
             }else{
@@ -188,6 +195,7 @@ export class UsersubsService {
                         conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, tok.user_id])
                         res.status(200).json({ status: true });
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: false });
                     }finally{conee.end()}
                 }else{
@@ -207,6 +215,7 @@ export class UsersubsService {
                 conee.query('DELETE FROM user_subscribes WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
                 res.status(200).json({ status: true });
             }catch(err){
+                console.log(err)
                 res.status(200).json({ status: false });
             }finally{conee.end()}
         } else {

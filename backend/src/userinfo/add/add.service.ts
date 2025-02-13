@@ -26,6 +26,7 @@ export class AddService {
                     }
                 })
             }catch(err){
+                console.log(err)
                 res.status(200).json({ status: false });
             }finally{conee.end()}  
         }else{
@@ -49,6 +50,7 @@ export class AddService {
                     }
                 })
             }catch(err){
+                console.log(err)
                 res.status(200).json({ status: false});
             }finally{conee.end()}
         }else{
@@ -71,6 +73,7 @@ export class AddService {
                     }
                 })
             }catch(err){
+                console.log(err)
                 res.status(200).json({ status: false});
             }finally{
                 conee.end()

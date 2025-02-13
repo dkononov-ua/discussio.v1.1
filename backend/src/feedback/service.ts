@@ -16,7 +16,9 @@ export class Service {
       } else {
         return false
       } 
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
   }
 
   async getFeedback(user_id: any, menuName: any) {
@@ -28,7 +30,9 @@ export class Service {
       } else {
         return false
       } 
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -45,7 +49,9 @@ export class Service {
           [user_id, tok.menuComment, tok.menuName, new Date(), tok.optionComfort, tok.optionDesign, tok.optionDevice, tok.optionFunctional, tok.optionImpression]) 
         return rows
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 

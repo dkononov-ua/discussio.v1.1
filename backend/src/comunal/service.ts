@@ -20,7 +20,9 @@ export class Service {
           [tok.flat_id, user_id, tok.comunal_name, tok.comunal.option_sendData, tok.comunal.comunal_before, tok.comunal.comunal_now, Number(tok.comunal.howmuch_pay), tok.when_pay_m, tok.when_pay_y, tok.comunal.consumed, Number(tok.comunal.tariff), Number(tok.comunal.calc_howmuch_pay), tok.comunal.about_pay]) 
         return rows
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -33,7 +35,9 @@ export class Service {
       } else {
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
 
   }
 
@@ -46,7 +50,9 @@ export class Service {
       } else {
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
   }
 
 
@@ -59,7 +65,9 @@ export class Service {
       }else{
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
 
   }
 
@@ -73,7 +81,9 @@ export class Service {
       } else {
         return { status: "Данні по комуналці не змінені" }
       }
-    }catch(err){return { status: "Данні по комуналці не змінені" }}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return { status: "Данні по комуналці не змінені" }}finally{conect.release();}
 
   }
 
@@ -87,7 +97,9 @@ export class Service {
       } else {
         return { status: "Данні по комуналці не змінені" }
       }
-    }catch(err){return { status: "Данні по комуналці не змінені" }}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return { status: "Данні по комуналці не змінені" }}finally{conect.release();}
 
   }
 
@@ -105,7 +117,9 @@ export class Service {
           [tok.flat_id, tok.comunal_name, tok.comunal.comunal_before, tok.comunal.comunal_now, tok.when_pay_m, tok.when_pay_y, tok.comunal.option_sendData])
         return rows
       }
-    }catch(err){return false}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return false}finally{conect.release();}
 
   }
 
@@ -125,7 +139,9 @@ export class Service {
       } else {
         return []
       }
-    }catch(err){return []}finally{conect.release();}
+    }catch(err){
+      console.log(err)
+      return []}finally{conect.release();}
 
   }
 
@@ -138,7 +154,9 @@ export class Service {
       } else {
         return false
       }
-    }catch(err){return false}finally{
+    }catch(err){
+      console.log(err)
+      return false}finally{
       conect.release();
     }
 
@@ -155,7 +173,8 @@ export class Service {
       await conect.execute('DELETE FROM comunal WHERE flat_id = ? AND comunal_name = ?;', [flat_id, comunal_name])
       await conect.execute('DELETE FROM comunal_name WHERE flat_id = ? AND comunal_name = ?;', [flat_id, comunal_name])
       return true
-    }catch{
+    }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }
@@ -172,7 +191,8 @@ export class Service {
       await conect.execute('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
       await conect.execute('DELETE FROM comunal WHERE flat_id = ?, comunal_name = ?, when_pay_m = ?, when_pay_y = ?;', [flat_id, tok.new.comunal_name, tok.new.when_pay_m, tok.new.when_pay_y])
       return true
-    }catch{
+    }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
   }

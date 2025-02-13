@@ -15,7 +15,10 @@ export class Service {
         } else {
           return []
         }
-      }catch(err){return []}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return []
+      }finally{conect.release();}
 
     }
 
@@ -37,7 +40,9 @@ export class Service {
         } else {
           return [{ status: 'Немає підтверджених підписників' }]
         }
-      }catch(err){return [{ status: 'Немає підтверджених підписників' }]}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return [{ status: 'Немає підтверджених підписників' }]}finally{conect.release();}
 
     }
 
@@ -50,7 +55,9 @@ export class Service {
         } else {
           return []
         }
-      }catch(err){return []}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return []}finally{conect.release();}
 
     }
 
@@ -64,7 +71,9 @@ export class Service {
         } else {
           return false
         }
-      }catch(err){return false}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return false}finally{conect.release();}
 
     }
 
@@ -78,7 +87,9 @@ export class Service {
         } else {
           return false
         }
-      }catch(err){return false}finally{conect.release();}
+      }catch(err){
+        console.log(err)
+        return false}finally{conect.release();}
 
     }
 

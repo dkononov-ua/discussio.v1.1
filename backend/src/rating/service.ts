@@ -17,6 +17,7 @@ export class Service {
               return false
             }
         }catch(err){
+            console.log(err)
             return false
         }finally{conect.release();}
     }
@@ -165,6 +166,7 @@ export class Service {
                         return "Підходящого договору не існує"
                     }
                 }catch(err){
+                    console.log(err)
                     return false
                 }finally{conect.release();}
 
@@ -222,6 +224,7 @@ export class Service {
                         return "Підходящого договору не існує"
                     }
                 }catch(err){
+                    console.log(err)
                     return false
                 }finally{conect.release();}
 
@@ -249,6 +252,7 @@ export class Service {
                 return false
             }
         }catch(err){
+            console.log(err)
             return false
         }finally{conect.release();}
 
@@ -271,6 +275,7 @@ export class Service {
                 return false
             }
         }catch(err){
+            console.log(err)
             return false
         }finally{conect.release();}
 

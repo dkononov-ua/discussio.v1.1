@@ -23,7 +23,9 @@ export class FeaturesService {
                         res.status(200).json({ status: true, inf:resuuuu[0] });                            
                     }
             })
-            }catch(err){res.status(200).json({ status: "Не правильно передані данні" })}finally{conee.end()}
+            }catch(err){
+                console.log(err)
+                res.status(200).json({ status: "Не правильно передані данні" })}finally{conee.end()}
 
             
         }else{
@@ -50,13 +52,16 @@ export class FeaturesService {
                     tok.new.mounths, tok.new.years, tok.new.day_counts, new Date(), tok.new.about,
                     tok.new.district, tok.new.micro_district, tok.new.metroname, tok.new.metrocolor, tok.new.floor, a.user_id],
                     (err, resuuuu)=>{
-                        if (err) {  
+                        if (err) { 
+                            
                             res.status(200).json({ status: "Не правильно передані данні" })
                         }else{
                             res.status(200).json({ status: true});                            
                         }
                 })
-            }catch(err){res.status(200).json({ status: "Не правильно передані данні" })}finally{conee.end()}
+            }catch(err){
+                console.log(err)
+                res.status(200).json({ status: "Не правильно передані данні" })}finally{conee.end()}
         }else{
             res.status(200).json({ status: false });
         }

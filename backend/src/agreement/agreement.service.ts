@@ -75,7 +75,9 @@ export class AgreementService {
                             }                                                                             
                         }
                     )
-                }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+                }catch(err){
+                    console.log(err)
+                    res.status(200).json({ status: false });}finally{conee.end()}
             }else{
                 res.status(200).json({ status: "Немає угоди" });
             }
@@ -100,7 +102,9 @@ export class AgreementService {
                                 res.status(200).json({ status: true });
                             }
                         )
-                    }catch(err){res.status(200).json({ status: false });}finally{conee.end()} 
+                    }catch(err){
+                        console.log(err)
+                        res.status(200).json({ status: false });}finally{conee.end()} 
                 }else{
                     res.status(200).json({ status: false });
                 }
@@ -117,7 +121,9 @@ export class AgreementService {
                                 'DELETE FROM agreement WHERE agreement_id = ?;',[agree.agreement_id],(err,result)=>{
                                     res.status(200).json({ status: true });
                             })
-                        }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+                        }catch(err){
+                            console.log(err)
+                            res.status(200).json({ status: false });}finally{conee.end()}
                     }else{
                         res.status(200).json({ status: false });
                     }
@@ -143,6 +149,7 @@ export class AgreementService {
                     
                     res.status(200).json({ status: true });
                 }catch(err){
+                    console.log(err)
                     res.status(200).json([{ status: false }]);
                 }finally{conee.end()}
 
@@ -330,6 +337,7 @@ export class AgreementService {
                         
                         res.status(200).json({ status: "Видалено" });
                     }catch(err){
+                        console.log(err)
                         res.status(200).json({ status: false });
                     }finally{conee.end()}
 
@@ -347,7 +355,9 @@ export class AgreementService {
                             conee.query('DELETE FROM agreement_filling WHERE agreement_id = ?;', [agree.agreement_id])
                             
                             res.status(200).json({ status: "Видалено" });
-                        }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+                        }catch(err){
+                            console.log(err)
+                            res.status(200).json({ status: false });}finally{conee.end()}
 
                     }else{
                         res.status(200).json({ status: "Данні введено не правильно" });

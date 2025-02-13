@@ -45,7 +45,9 @@ export class CitizenService {
                   res.status(200).json({ status: ")" });
                 }
               );
-            }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+            }catch(err){
+              console.log(err)
+              res.status(200).json({ status: false });}finally{conee.end()}
           }else{
             const agent_id = await this.appService.agent(tok.flat_id);
             if(agent_id){
@@ -74,6 +76,7 @@ export class CitizenService {
                   }
                 );
               }catch(err){
+                console.log(err)
                 res.status(200).json({ status: false });
               }finally{conee.end()}
 
@@ -117,7 +120,9 @@ export class CitizenService {
                     res.status(200).json({ status: ")" });
                   }
                 );
-              }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+              }catch(err){
+                console.log(err)
+                res.status(200).json({ status: false });}finally{conee.end()}
             }else{
               const agent_id = await this.appService.agent(tok.flat_id);
               if(agent_id){
@@ -142,10 +147,13 @@ export class CitizenService {
                       tok.user_id,
                     ],
                     (errrr, resu) => {
+                      console.log(errrr)
                       res.status(200).json({ status: ")" });
                     }
                   );
-                }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+                }catch(err){
+                  console.log(err)
+                  res.status(200).json({ status: false });}finally{conee.end()}
 
               }else{
                 res.status(200).json({ status: false });
@@ -167,7 +175,9 @@ export class CitizenService {
                     res.status(200).json({ status: ")" });
                   }
                 );
-              }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+              }catch(err){
+                console.log(err)
+                res.status(200).json({ status: false });}finally{conee.end()}
             }else{
               res.status(200).json({ status: false });
             }
@@ -197,7 +207,9 @@ export class CitizenService {
               conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [agre.subscriber_id, fl.flat_id], (err, resul)=>{console.log(err)});
               conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [fl.flat_id, agre.user_id], (err, resul)=>{1});
               res.status(200).json({ status: true });
-            }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+            }catch(err){
+              console.log(err)
+              res.status(200).json({ status: false });}finally{conee.end()}
 
           }else{
             res.status(200).json({ status: false });
@@ -217,7 +229,9 @@ export class CitizenService {
                 conee.query('INSERT INTO citizen (user_id, flat_id) VALUES (?, ?)', [agre.subscriber_id, admin.flat_id], (err, resul)=>{console.log(err)});
                 conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [admin.flat_id, agre.user_id], (err, resul)=>{1});
                 res.status(200).json({ status: true });
-              }catch(err){res.status(200).json({ status: false });}finally{conee.end()}
+              }catch(err){
+                console.log(err)
+                res.status(200).json({ status: false });}finally{conee.end()}
 
             }else{
               res.status(200).json({ status: false });
@@ -250,6 +264,7 @@ export class CitizenService {
           ]);
           res.status(200).json({ status: true });
         }catch(err){
+          console.log(err)
           res.status(200).json({ status: false });
         }finally{conee.end()}
 
@@ -265,6 +280,7 @@ export class CitizenService {
             ]);
             res.status(200).json({ status: true });
           }catch(err){
+            console.log(err)
             res.status(200).json({ status: false });
           }finally{conee.end()}
         }else if(admin){
@@ -274,7 +290,7 @@ export class CitizenService {
               admin.flat_id,
               a.user_id,
             ]);
-          }catch(err){}finally{conee.end()}
+          }catch(err){console.log(err)}finally{conee.end()}
         }
       }
     }else{

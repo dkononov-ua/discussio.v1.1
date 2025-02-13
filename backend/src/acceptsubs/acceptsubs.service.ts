@@ -75,7 +75,9 @@ export class AcceptSubsService {
             try{
                 conee.query('DELETE FROM accept_subs WHERE flat_id = ? AND user_id = ?;', [tok.flat_id, a.user_id])
                 res.status(200).json({ status: true });
-            }catch(err){res.status(200).json({ status:  "Авторизуйтесь" });}finally{conee.end()}
+            }catch(err){
+                console.log(err)
+                res.status(200).json({ status:  "Авторизуйтесь" });}finally{conee.end()}
 
         }else{
             res.status(200).json({ status:  "Авторизуйтесь" });

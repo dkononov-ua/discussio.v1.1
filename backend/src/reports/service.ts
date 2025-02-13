@@ -18,6 +18,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -33,6 +34,7 @@ export class Service {
         return false
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conect.release();}
 
@@ -50,6 +52,7 @@ export class Service {
         return true
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conee.end()}
 
@@ -67,6 +70,7 @@ export class Service {
         return true
       }
     }catch(err){
+      console.log(err)
       return false
     }finally{conee.end()}
 

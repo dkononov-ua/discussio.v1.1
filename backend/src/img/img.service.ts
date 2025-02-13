@@ -77,7 +77,7 @@ export class ImgService {
                                                     });
                                             })
                                             .catch((error) => {
-                                                console.error(error);
+                                                console.log(error);
                                             });
                                     });
                                 })
@@ -85,7 +85,7 @@ export class ImgService {
                             res.status(200).json({ status: "Збережено" });
                         }
                     })
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
 
             }else{
                 unlink("../../code/Static/" + files.filename, () => {
@@ -126,7 +126,7 @@ export class ImgService {
                             unlink("../../code/Static/users/" + re[0].img, (e) => { console.log(e) })
                         }else if(re[0].img == "user_default.svg"){
                             conee.query('DELETE FROM user_img WHERE user_id = ?', [a.user_id])
-                        }}catch(err){}finally{conee.end()}
+                        }}catch(err){console.log(err)}finally{conee.end()}
     
                         try{
                             rename("../../code/Static/" + files.filename, "../../code/Static/" + files.filename + type_file, (err) => {
@@ -134,7 +134,7 @@ export class ImgService {
                                 const outputFile = "../../code/Static/users/" + files.filename + randomNumber + type_file;
                                 readFile(inputFile, (err, data) => {
                                     if (err) {
-                                        console.error(err);
+                                        console.log(err);
                                         return;
                                     }
                                     sharp(data)
@@ -157,6 +157,7 @@ export class ImgService {
                                                         (errrr) => {
                                                             conee.end()
                                                             if (errrr) {
+                                                                console.log(errrr)
                                                                 unlink(inputFile, () => { })
                                                                 unlink(outputFile, () => { })
                                                                 res.status(200).json({ status: "Помилка збереження" });
@@ -167,20 +168,21 @@ export class ImgService {
                                                         })
                                                 })
                                                 .catch((err) => {
+                                                    console.log(err)
                                                     unlink("../../code/Static/" + files.filename + type_file, () => { })
                                                     console.error('Помилка при зміні розміру зображення:', err);
                                                 });
                                         })
                                         .catch((error) => {
-                                            console.error(error);
+                                            console.log(error);
                                         });
                                 })
                             })
                         }catch(errrr){
-                            console.error(errrr);
+                            console.log(errrr);
                         }   
                     })
-                }catch(err){}finally{conee.end()}
+                }catch(err){console.log(err)}finally{conee.end()}
   
             }else{
                 unlink("../../code/Static/" + files.filename, () => {
@@ -212,7 +214,7 @@ export class ImgService {
                             const outputFile = "../../code/Static/filling/" + files.filename + randomNumber + type_file;
                             readFile(inputFile, (err, data) => {
                                 if (err) {
-                                    console.error(err);
+                                    console.log(err);
                                     return;
                                 }
                                 sharp(data)
@@ -235,6 +237,7 @@ export class ImgService {
                                                     conee.query("INSERT INTO filling (flat_id, img, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?, ?)", [b.flat_id, files.filename + randomNumber + type_file, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                                                     (errrr) => {
                                                         if (errrr) {
+                                                            console.log(errrr)
                                                             unlink(inputFile, () => { })
                                                             unlink(outputFile, () => { })
                                                             res.status(200).json({ status: "Помилка збереження" });
@@ -243,15 +246,16 @@ export class ImgService {
                                                             res.status(200).json({ status: "Збережено" });
                                                         }
                                                     })
-                                                }catch(err){}finally{conee.end()}
+                                                }catch(err){console.log(err)}finally{conee.end()}
                                             })
                                             .catch((err) => {
+                                                console.log(err)
                                                 unlink("../../code/Static/" + files.filename + type_file, () => { })
                                                 console.error('Помилка при зміні розміру зображення:', err);
                                             });
                                     })
                                     .catch((error) => {
-                                        console.error(error);
+                                        console.log(error);
                                     });
                             })
                         })
@@ -261,7 +265,8 @@ export class ImgService {
                                 res.status(200).json({ status: "Помилковий формат" });
                             })
                         } catch (err) {
-                            throw err
+                            console.log(err)
+                            
                         }
                     }
                 }else{
@@ -275,7 +280,7 @@ export class ImgService {
                                 res.status(200).json({ status: "Збережено" });
                             }
                         })
-                    }catch(err){}finally{conee.end()}  
+                    }catch(err){console.log(err)}finally{conee.end()}  
                 }
             }else{
                 let admin = await this.appService.citizen(a.user_id, b.flat_id)
@@ -288,7 +293,7 @@ export class ImgService {
                                 const outputFile = "../../code/Static/filling/" + files.filename + randomNumber + type_file;
                                 readFile(inputFile, (err, data) => {
                                     if (err) {
-                                        console.error(err);
+                                        console.log(err);
                                         return;
                                     }
                                     sharp(data)
@@ -311,6 +316,7 @@ export class ImgService {
                                                         conee.query("INSERT INTO filling (flat_id, img, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?, ?)", [b.flat_id, files.filename + randomNumber + type_file, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                                                         (errrr) => {
                                                             if (errrr) {
+                                                                console.log(errrr)
                                                                 unlink(inputFile, () => { })
                                                                 unlink(outputFile, () => { })
                                                                 res.status(200).json({ status: "Помилка збереження" });
@@ -319,15 +325,16 @@ export class ImgService {
                                                                 res.status(200).json({ status: "Збережено" });
                                                             }
                                                         })
-                                                    }catch(err){}finally{conee.end()}    
+                                                    }catch(err){console.log(err)}finally{conee.end()}    
                                                 })
                                                 .catch((err) => {
+                                                    console.log(err)
                                                     unlink("../../code/Static/" + files.filename + type_file, () => { })
                                                     console.error('Помилка при зміні розміру зображення:', err);
                                                 });
                                         })
                                         .catch((error) => {
-                                            console.error(error);
+                                            console.log(error)
                                         });
                                 })
                             })
@@ -337,7 +344,7 @@ export class ImgService {
                                     res.status(200).json({ status: "Помилковий формат" });
                                 })
                             } catch (err) {
-                                throw err
+                                console.log(err)
                             }
                         }
                     }else{
@@ -346,12 +353,13 @@ export class ImgService {
                             conee.query("INSERT INTO filling (flat_id, about_filling, name_filling, type_filling, number_filling, condition_filling) VALUES (?, ?, ?, ?, ?, ?)", [b.flat_id, b.about_filling, b.name_filling, b.type_filling, b.number_filling, b.condition_filling],
                             (errr) => {
                                 if (errr) {
+                                    console.log(errr)
                                     res.status(200).json({ status: "Помилка збереження" });
                                 } else {
                                     res.status(200).json({ status: "Збережено" });
                                 }
                             })
-                        }catch(err){}finally{conee.end()} 
+                        }catch(err){console.log(err)}finally{conee.end()} 
                     }
                 }else{
                     try {
@@ -359,7 +367,7 @@ export class ImgService {
                             res.status(200).json({ status: "Немає доступу" });
                         })
                     } catch (err) {
-                        throw err
+                        console.log(err)
                     }
                 }
             }
@@ -369,7 +377,7 @@ export class ImgService {
                     res.status(200).json({ status: "Авторизуйтесь" });
                 })
             } catch (err) {
-                throw err
+                console.log(err)
             }
         }
     }
@@ -392,7 +400,7 @@ export class ImgService {
                             try{
                                 conee.query('DELETE FROM comunal_img WHERE flat_id = ? AND comunal_name = ? AND when_pay_y = ? AND when_pay_m = ?', [sssss[0].flat_id, sssss[0].comunal_name, String(sssss[0].when_pay_y), sssss[0].when_pay_m])
                                 unlink("../../code/Static/comunal/" + sssss[0].img, (e) => { console.log(e) })
-                            }catch(err){}finally{conee.end()}
+                            }catch(err){console.log(err)}finally{conee.end()}
 
                         }
 
@@ -401,7 +409,7 @@ export class ImgService {
                             const outputFile = "../../code/Static/comunal/" + files.filename + randomNumber + type_file;
                             readFile(inputFile, (err, data) => {
                                 if (err) {
-                                    console.error(err);
+                                    console.log(err)
                                     return;
                                 }
                                 sharp(data)
@@ -430,12 +438,14 @@ export class ImgService {
                                                 }
                                             })
                                             .catch((err) => {
+                                                console.log(err)
                                                 unlink("../../code/Static/" + files.filename + type_file, () => { })
                                                 console.error('Помилка при зміні розміру зображення:', err);
                                             });
                                     })
                                     .catch((error) => {
-                                        console.error(error);
+                                        console.log(error)
+                                        
                                     });
                             })
                         })
@@ -445,7 +455,7 @@ export class ImgService {
                                 res.status(200).json({ status: "Помилковий формат" });
                             })
                         } catch (err) {
-                            throw err
+                            console.log(err)
                         }
                     }
                 }else{
@@ -463,7 +473,7 @@ export class ImgService {
                                 try{
                                     conee.query('DELETE FROM comunal_img WHERE flat_id = ? AND comunal_name = ? AND when_pay_y = ? AND when_pay_m = ?', [sssss[0].flat_id, sssss[0].comunal_name, String(sssss[0].when_pay_y), sssss[0].when_pay_m])
                                     unlink("../../code/Static/comunal/" + sssss[0].img, (e) => { console.log(e) })
-                                }catch(err){}finally{conee.end()}
+                                }catch(err){console.log(err)}finally{conee.end()}
 
                             }
                             rename("../../code/Static/" + files.filename, "../../code/Static/" + files.filename + type_file, (err) => {
@@ -471,7 +481,7 @@ export class ImgService {
                                 const outputFile = "../../code/Static/comunal/" + files.filename + randomNumber + type_file;
                                 readFile(inputFile, (err, data) => {
                                     if (err) {
-                                        console.error(err);
+                                        console.log(err)
                                         return;
                                     }
                                     sharp(data)
@@ -494,18 +504,20 @@ export class ImgService {
                                                         unlink(inputFile, () => { })
                                                         res.status(200).json({ status: "Збережено" });
                                                     }catch(err){
+                                                        console.log(err)
                                                         unlink(inputFile, () => { })
                                                         unlink(outputFile, () => { })
                                                         res.status(200).json({ status: "Помилка збереження" });
                                                     }
                                                 })
                                                 .catch((err) => {
+                                                    console.log(err)
                                                     unlink("../../code/Static/" + files.filename + type_file, () => { })
                                                     console.error('Помилка при зміні розміру зображення:', err);
                                                 });
                                         })
                                         .catch((error) => {
-                                            console.error(error);
+                                            console.log(error)
                                         });
                                 })
                             })
@@ -515,7 +527,7 @@ export class ImgService {
                                     res.status(200).json({ status: "Помилковий формат" });
                                 })
                             } catch (err) {
-                                throw err
+                                console.log(err)
                             }
                         }
                     }else{
@@ -527,7 +539,7 @@ export class ImgService {
                             res.status(200).json({ status: "Немає доступу" });
                         })
                     } catch (err) {
-                        throw err
+                        console.log(err)
                     }
                 }
             }
@@ -537,7 +549,7 @@ export class ImgService {
                     res.status(200).json({ status: "Авторизуйтесь" });
                 })
             } catch (err) {
-                throw err
+                console.log(err)
             }
         }
     } 
