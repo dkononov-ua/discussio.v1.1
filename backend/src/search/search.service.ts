@@ -230,7 +230,7 @@ export class SearchService {
                 results.forEach(async(e: any) => {
                     let promise = new Promise(async(resolve, reject) => {
                         conee.query("SELECT * FROM flat_img WHERE flat_id = ?", [e.flat_id], async(er, resq: Array<any> | any) => {
-                            
+                            conee.end()
                             if (er) {
                                 reject(er)
                             } else {
@@ -243,7 +243,7 @@ export class SearchService {
                                 }else{
                                     let owner = await this.appService.getFlatOwner(e.flat_id)
                                     rie = {rielt: owner.realll, owner: owner.checked }
-                                    rating = await this.Service.getFlatRating(owner.owner_id)
+                                    rating = await this.Service.getFlatRating(owner.user_id)
                                 }
                                 e.rie = rie
                                 e.img = resq.map((i: any) => i.img)
@@ -262,7 +262,7 @@ export class SearchService {
             }).catch((error) => {
                 res.status(500).json({ error: error.message });
             })
-            conee.end()
+            
         })
 
         }catch(errrr){
